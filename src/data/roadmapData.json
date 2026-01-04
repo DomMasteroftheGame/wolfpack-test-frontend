@@ -1,0 +1,272 @@
+[
+    {
+        "id": 1,
+        "phase": "Ideation",
+        "description": "Generate ideas for new products or services",
+        "status": "optimal"
+    },
+    {
+        "id": 2,
+        "phase": "Market Research",
+        "description": "Conduct market research to determine viability",
+        "status": "over-tasked",
+        "members": [
+            {
+                "name": "Goose",
+                "tasks": 5,
+                "warning": true
+            },
+            {
+                "name": "You",
+                "tasks": 2
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "phase": "Competitive Analysis",
+        "description": "Analyze competitors in the market",
+        "status": "optimal"
+    },
+    {
+        "id": 4,
+        "phase": "Target Market",
+        "description": "Determine the target market for the product or service",
+        "status": "optimal"
+    },
+    {
+        "id": 5,
+        "phase": "Unique Selling Proposition",
+        "description": "Develop a unique selling proposition",
+        "status": "over-tasked",
+        "members": [
+            {
+                "name": "Maverick",
+                "tasks": 4,
+                "warning": true
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "phase": "Minimum Viable Product",
+        "description": "Develop an MVP to test in the market",
+        "status": "optimal"
+    },
+    {
+        "id": 7,
+        "phase": "Prototype",
+        "description": "Develop a prototype for the product or service",
+        "status": "optimal"
+    },
+    {
+        "id": 8,
+        "phase": "Customer Feedback",
+        "description": "Gather feedback from potential customers",
+        "status": "optimal",
+        "members": [
+            {
+                "name": "Iceman",
+                "tasks": 3
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "phase": "Product/Service Refinement",
+        "description": "Refine based on customer feedback",
+        "status": "optimal"
+    },
+    {
+        "id": 10,
+        "phase": "Branding",
+        "description": "Develop branding for the product or service",
+        "status": "optimal"
+    },
+    {
+        "id": 11,
+        "phase": "Marketing Plan",
+        "description": "Develop a marketing plan",
+        "status": "optimal"
+    },
+    {
+        "id": 12,
+        "phase": "Pricing Strategy",
+        "description": "Develop a pricing strategy",
+        "status": "optimal",
+        "members": [
+            {
+                "name": "Viper",
+                "tasks": 1
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "phase": "Launch Preparation",
+        "description": "Prepare for the launch",
+        "status": "optimal"
+    },
+    {
+        "id": 14,
+        "phase": "Launch",
+        "description": "Launch the product or service",
+        "status": "optimal"
+    },
+    {
+        "id": 15,
+        "phase": "Early Sales",
+        "description": "Generate early sales",
+        "status": "optimal"
+    },
+    {
+        "id": 16,
+        "phase": "Customer Retention",
+        "description": "Develop strategies to retain customers",
+        "status": "optimal"
+    },
+    {
+        "id": 17,
+        "phase": "Referral Program",
+        "description": "Develop a referral program",
+        "status": "optimal"
+    },
+    {
+        "id": 18,
+        "phase": "Expansion",
+        "description": "Expand into new markets or offerings",
+        "status": "optimal"
+    },
+    {
+        "id": 19,
+        "phase": "Strategic Partnerships",
+        "description": "Develop strategic partnerships",
+        "status": "optimal"
+    },
+    {
+        "id": 20,
+        "phase": "Scaling",
+        "description": "Develop a plan to scale",
+        "status": "optimal"
+    },
+    {
+        "id": 21,
+        "phase": "Operations",
+        "description": "Develop operational processes",
+        "status": "optimal"
+    },
+    {
+        "id": 22,
+        "phase": "Financial Planning",
+        "description": "Develop financial support plans",
+        "status": "optimal"
+    },
+    {
+        "id": 23,
+        "phase": "Funding",
+        "description": "Secure funding",
+        "status": "optimal"
+    },
+    {
+        "id": 24,
+        "phase": "Investor Relations",
+        "description": "Develop relationships with investors",
+        "status": "optimal"
+    },
+    {
+        "id": 25,
+        "phase": "Growth",
+        "description": "Continue to grow the product/service",
+        "status": "optimal"
+    },
+    {
+        "id": 26,
+        "phase": "Industry Analysis",
+        "description": "Analyze market trends",
+        "status": "optimal"
+    },
+    {
+        "id": 27,
+        "phase": "Pivot",
+        "description": "Determine if a pivot is necessary",
+        "status": "optimal"
+    },
+    {
+        "id": 28,
+        "phase": "Innovation",
+        "description": "Explore new innovations",
+        "status": "optimal"
+    },
+    {
+        "id": 29,
+        "phase": "Intellectual Property",
+        "description": "Develop IP strategies",
+        "status": "optimal"
+    },
+    {
+        "id": 30,
+        "phase": "Talent Acquisition",
+        "description": "Develop strategies for hiring",
+        "status": "optimal"
+    },
+    {
+        "id": 31,
+        "phase": "Organizational Structure",
+        "description": "Develop the team structure",
+        "status": "optimal"
+    },
+    {
+        "id": 32,
+        "phase": "Performance Metrics",
+        "description": "Develop metrics to measure success",
+        "status": "optimal"
+    },
+    {
+        "id": 33,
+        "phase": "Data Analysis",
+        "description": "Analyze data for decisions",
+        "status": "optimal"
+    },
+    {
+        "id": 34,
+        "phase": "Risk Management",
+        "description": "Develop risk strategies",
+        "status": "optimal"
+    },
+    {
+        "id": 35,
+        "phase": "Legal Compliance",
+        "description": "Ensure legal compliance",
+        "status": "optimal"
+    },
+    {
+        "id": 36,
+        "phase": "Social Responsibility",
+        "description": "Develop CSR strategies",
+        "status": "optimal"
+    },
+    {
+        "id": 37,
+        "phase": "Crisis Management",
+        "description": "Develop crisis strategies",
+        "status": "optimal"
+    },
+    {
+        "id": 38,
+        "phase": "Reputation Management",
+        "description": "Manage brand reputation",
+        "status": "optimal"
+    },
+    {
+        "id": 39,
+        "phase": "Exit Strategy",
+        "description": "Develop an exit strategy",
+        "status": "optimal"
+    },
+    {
+        "id": 40,
+        "phase": "Success",
+        "description": "Celebrate the success",
+        "status": "optimal"
+    }
+]

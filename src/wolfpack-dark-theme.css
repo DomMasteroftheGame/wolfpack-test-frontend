@@ -1,0 +1,369 @@
+/* Wolfpack Dark Theme with Gold Accents */
+/* This file adds dark mode styling to the Build Your Wolfpack application */
+
+:root {
+  /* Dark theme colors - Glassmorphism Base */
+  --wolfpack-dark-bg: #050505;
+  --wolfpack-dark-surface: rgba(25, 25, 25, 0.65);
+  /* Semi-transparent for glass */
+  --wolfpack-dark-surface-hover: rgba(40, 40, 40, 0.75);
+  --wolfpack-dark-border: rgba(255, 255, 255, 0.1);
+
+  /* Gold accent colors & Gradients */
+  --wolfpack-gold: #d4af37;
+  --wolfpack-gold-light: #f4d466;
+  --wolfpack-gold-dark: #b8941f;
+  --wolfpack-gold-gradient: linear-gradient(135deg, #b8941f 0%, #f4d466 50%, #d4af37 100%);
+  --wolfpack-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Text colors */
+  --wolfpack-text-primary: #ffffff;
+  --wolfpack-text-secondary: #e0e0e0;
+  --wolfpack-text-muted: #a0a0a0;
+
+  /* Status colors with dark theme compatibility */
+  --wolfpack-success: #10b981;
+  --wolfpack-warning: #f59e0b;
+  --wolfpack-error: #ef4444;
+  --wolfpack-info: #3b82f6;
+}
+
+/* Apply dark theme to body and main containers */
+body.wolfpack-dark,
+.wolfpack-dark {
+  background-color: var(--wolfpack-dark-bg);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--wolfpack-text-primary);
+  min-height: 100vh;
+}
+
+/* Dark theme for main app container */
+.wolfpack-dark .min-h-screen {
+  background-color: transparent;
+  /* Allow body background to show */
+}
+
+/* Override light backgrounds with Glass */
+.wolfpack-dark .bg-gray-50,
+.wolfpack-dark .bg-gray-100 {
+  background-color: transparent;
+}
+
+.wolfpack-dark .bg-white {
+  background-color: var(--wolfpack-dark-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--wolfpack-dark-border);
+  box-shadow: var(--wolfpack-glass-shadow);
+}
+
+/* Text color overrides */
+.wolfpack-dark .text-gray-600,
+.wolfpack-dark .text-gray-700 {
+  color: var(--wolfpack-text-secondary);
+}
+
+.wolfpack-dark .text-gray-500 {
+  color: var(--wolfpack-text-muted);
+}
+
+.wolfpack-dark .text-gray-900 {
+  color: var(--wolfpack-text-primary);
+}
+
+/* Gold Gradient Buttons */
+.wolfpack-dark .bg-indigo-600,
+.wolfpack-dark button.bg-indigo-600 {
+  background: var(--wolfpack-gold-gradient);
+  border: none;
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.wolfpack-dark .bg-indigo-600:hover,
+.wolfpack-dark button.bg-indigo-600:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+  filter: brightness(1.1);
+}
+
+.wolfpack-dark .text-indigo-600 {
+  color: var(--wolfpack-gold-light);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.wolfpack-dark .hover\:bg-indigo-50:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Border colors */
+.wolfpack-dark .border-gray-300,
+.wolfpack-dark .border-gray-200 {
+  border-color: var(--wolfpack-dark-border);
+}
+
+/* Shadow adjustments */
+.wolfpack-dark .shadow,
+.wolfpack-dark .shadow-md,
+.wolfpack-dark .shadow-lg {
+  box-shadow: var(--wolfpack-glass-shadow);
+}
+
+/* Card hover effects */
+.wolfpack-dark .hover\:shadow-md:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+/* Input fields - Ultra Premium */
+.wolfpack-dark input[type="text"],
+.wolfpack-dark input[type="email"],
+.wolfpack-dark input[type="password"],
+.wolfpack-dark textarea,
+.wolfpack-dark select {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--wolfpack-dark-border);
+  color: var(--wolfpack-text-primary);
+  transition: all 0.3s ease;
+}
+
+.wolfpack-dark input::placeholder,
+.wolfpack-dark textarea::placeholder {
+  color: var(--wolfpack-text-muted);
+  opacity: 0.7;
+}
+
+.wolfpack-dark input:focus,
+.wolfpack-dark textarea:focus,
+.wolfpack-dark select:focus {
+  border-color: var(--wolfpack-gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Navbar styling */
+.wolfpack-dark nav {
+  background-color: rgba(10, 10, 10, 0.85);
+  /* Darker glass for nav */
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Project cards */
+.wolfpack-dark .bg-white.rounded-lg {
+  background-color: var(--wolfpack-dark-surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--wolfpack-dark-border);
+}
+
+.wolfpack-dark .bg-white.rounded-lg:hover {
+  background-color: var(--wolfpack-dark-surface-hover);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+/* Gameboard styling */
+.wolfpack-dark .gameboard-tile {
+  background-color: var(--wolfpack-dark-surface);
+  border-color: var(--wolfpack-gold);
+}
+
+.wolfpack-dark .gameboard-tile.filled {
+  background-color: var(--wolfpack-gold);
+  color: var(--wolfpack-dark-bg);
+}
+
+/* Leaderboard styling */
+.wolfpack-dark .leaderboard-item {
+  background-color: var(--wolfpack-dark-surface);
+  border-bottom: 1px solid var(--wolfpack-dark-border);
+}
+
+.wolfpack-dark .leaderboard-item:hover {
+  background-color: var(--wolfpack-dark-surface-hover);
+}
+
+.wolfpack-dark .leaderboard-rank-1 {
+  border-left: 4px solid var(--wolfpack-gold);
+}
+
+.wolfpack-dark .leaderboard-rank-2 {
+  border-left: 4px solid #c0c0c0;
+}
+
+.wolfpack-dark .leaderboard-rank-3 {
+  border-left: 4px solid #cd7f32;
+}
+
+/* Kanban board columns */
+.wolfpack-dark .kanban-column {
+  background-color: var(--wolfpack-dark-surface);
+  border: 1px solid var(--wolfpack-dark-border);
+}
+
+.wolfpack-dark .kanban-card {
+  background-color: var(--wolfpack-dark-bg);
+  border: 1px solid var(--wolfpack-dark-border);
+}
+
+.wolfpack-dark .kanban-card:hover {
+  border-color: var(--wolfpack-gold);
+}
+
+/* Modal overlays */
+.wolfpack-dark .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.wolfpack-dark .modal-content {
+  background-color: var(--wolfpack-dark-surface);
+  border: 1px solid var(--wolfpack-dark-border);
+}
+
+/* Dropdown menus */
+.wolfpack-dark .dropdown-menu {
+  background-color: var(--wolfpack-dark-surface);
+  border: 1px solid var(--wolfpack-dark-border);
+}
+
+.wolfpack-dark .dropdown-item:hover {
+  background-color: var(--wolfpack-dark-surface-hover);
+}
+
+/* Alert/notification styles */
+.wolfpack-dark .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: var(--wolfpack-error);
+}
+
+.wolfpack-dark .text-red-700 {
+  color: #fca5a5;
+}
+
+.wolfpack-dark .bg-green-100 {
+  background-color: rgba(16, 185, 129, 0.2);
+  border-color: var(--wolfpack-success);
+}
+
+.wolfpack-dark .text-green-700 {
+  color: #86efac;
+}
+
+/* Badge/tag styling */
+.wolfpack-dark .badge {
+  background-color: var(--wolfpack-gold);
+  color: var(--wolfpack-dark-bg);
+}
+
+/* Wolf type badges */
+.wolfpack-dark .wolf-badge-labor {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.wolfpack-dark .wolf-badge-finance {
+  background-color: #10b981;
+  color: white;
+}
+
+.wolfpack-dark .wolf-badge-sales {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+/* IVP and Equity displays */
+.wolfpack-dark .ivp-display {
+  color: var(--wolfpack-gold);
+  font-weight: bold;
+}
+
+.wolfpack-dark .equity-display {
+  color: var(--wolfpack-gold-light);
+}
+
+/* Loading states */
+.wolfpack-dark .loading-spinner {
+  border-color: var(--wolfpack-dark-border);
+  border-top-color: var(--wolfpack-gold);
+}
+
+/* Scrollbar styling for dark theme */
+.wolfpack-dark ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.wolfpack-dark ::-webkit-scrollbar-track {
+  background: var(--wolfpack-dark-bg);
+}
+
+.wolfpack-dark ::-webkit-scrollbar-thumb {
+  background: var(--wolfpack-dark-border);
+  border-radius: 6px;
+}
+
+.wolfpack-dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--wolfpack-gold);
+}
+
+/* Transition for theme switching */
+.wolfpack-dark * {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Gold glow effect for important elements */
+.wolfpack-gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.wolfpack-dark .wolfpack-gold-glow:hover {
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+}
+
+/* Header/Hero section with gold accent */
+.wolfpack-dark .hero-section {
+  background: linear-gradient(135deg, var(--wolfpack-dark-bg) 0%, #1a1a1a 50%, var(--wolfpack-dark-bg) 100%);
+  border-bottom: 2px solid var(--wolfpack-gold);
+}
+
+/* Footer styling */
+.wolfpack-dark footer {
+  background-color: var(--wolfpack-dark-surface);
+  border-top: 1px solid var(--wolfpack-dark-border);
+}
+
+/* Link colors */
+.wolfpack-dark a {
+  color: var(--wolfpack-gold-light);
+}
+
+.wolfpack-dark a:hover {
+  color: var(--wolfpack-gold);
+  text-decoration: underline;
+}
+
+/* Disabled state */
+.wolfpack-dark button:disabled,
+.wolfpack-dark input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--wolfpack-dark-surface);
+}
+
+/* Focus visible for accessibility */
+.wolfpack-dark *:focus-visible {
+  outline: 2px solid var(--wolfpack-gold);
+  outline-offset: 2px;
+}

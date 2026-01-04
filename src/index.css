@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 7%; /* #111111 Void Black */
+    --foreground: 0 0% 100%;
+    --card: 220 13% 18%; /* #1F2937 Charcoal */
+    --card-foreground: 0 0% 100%;
+    --popover: 220 13% 18%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 48 100% 50%; /* #FFD700 Gold */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 48 100% 50%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    
+    /* Custom Colors as Variables for Direct Use */
+    --color-void: #111111;
+    --color-charcoal: #1F2937;
+    --color-gold: #FFD700;
+    --color-labor: #ef4444;
+    --color-finance: #22c55e;
+    --color-sales: #3b82f6;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
+    --card: 220 13% 18%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 13% 18%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 48 100% 50%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 48 100% 50%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: var(--color-void);
+    color: hsl(var(--foreground));
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar Styling & Mobile Optimization */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #111827; 
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #FFD700; /* Gold */
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #eab308; 
+  }
+  
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #FFD700 #111827;
+    
+    /* CRITICAL: Enables momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Ensures touch gestures work for panning */
+    touch-action: pan-y;
+  }
+
+  /* Cyber-Noir Background Utilities */
+  .bg-cyber-noise {
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.2;
+  }
+
+  .bg-cyber-grid {
+    background-image: linear-gradient(to right, #1f2937 1px, transparent 1px),
+                      linear-gradient(to bottom, #1f2937 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+  }
+
+  /* Tactical Noir Utilities - Using CSS Variables directly */
+  .tactical-card {
+    background-color: var(--color-charcoal);
+    border: 1px solid #1f2937;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .tactical-text {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--color-gold);
+    letter-spacing: 0.1em;
+  }
+
+  .neon-border-labor {
+    border-color: var(--color-labor);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  }
+  .neon-border-finance {
+    border-color: var(--color-finance);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  }
+  .neon-border-sales {
+    border-color: var(--color-sales);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+}

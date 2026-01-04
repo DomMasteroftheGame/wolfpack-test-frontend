@@ -1,0 +1,164 @@
+{
+  "name": "Build Your Wolfpack",
+  "version": "1.0.0",
+  "settings_schema": [
+    {
+      "name": "Colors",
+      "settings": [
+        {
+          "type": "color",
+          "id": "primary_color",
+          "label": "Primary Color",
+          "default": "#6366f1"
+        },
+        {
+          "type": "color",
+          "id": "secondary_color",
+          "label": "Secondary Color",
+          "default": "#4f46e5"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#0a0e2a"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#ffffff"
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "settings": [
+        {
+          "type": "font_picker",
+          "id": "heading_font",
+          "label": "Heading Font",
+          "default": "Montserrat"
+        },
+        {
+          "type": "font_picker",
+          "id": "body_font",
+          "label": "Body Font",
+          "default": "Montserrat"
+        },
+        {
+          "type": "range",
+          "id": "base_font_size",
+          "label": "Base Font Size",
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "default": 16,
+          "unit": "px"
+        }
+      ]
+    },
+    {
+      "name": "Layout",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout_width",
+          "label": "Layout Width",
+          "options": [
+            {
+              "value": "narrow",
+              "label": "Narrow"
+            },
+            {
+              "value": "standard",
+              "label": "Standard"
+            },
+            {
+              "value": "wide",
+              "label": "Wide"
+            }
+          ],
+          "default": "standard"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "Show Logo",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image"
+        }
+      ]
+    },
+    {
+      "name": "Game Features",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_gameboard",
+          "label": "Enable Gameboard",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_leaderboard",
+          "label": "Enable Leaderboard",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_celebrations",
+          "label": "Enable Celebration Animations",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "celebration_intensity",
+          "label": "Celebration Intensity",
+          "options": [
+            {
+              "value": "subtle",
+              "label": "Subtle"
+            },
+            {
+              "value": "moderate",
+              "label": "Moderate"
+            },
+            {
+              "value": "intense",
+              "label": "Intense"
+            }
+          ],
+          "default": "moderate"
+        }
+      ]
+    },
+    {
+      "name": "Social Features",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_connections",
+          "label": "Enable User Connections",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_sharing",
+          "label": "Enable Social Sharing",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "sharing_message",
+          "label": "Default Sharing Message",
+          "default": "Check out my progress in Build Your Wolfpack!"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{% if page.handle == 'watch' %}
+  {% render 'watch-content' %}
+{% else %}
+  <div class="page-width" style="max-width: 800px; margin: 4rem auto; padding: 0 2rem;">
+    <header class="section-header text-center" style="margin-bottom: 3rem;">
+      <h1 class="section-header__title" style="color: var(--color-gold); font-size: 2.5rem; text-transform: uppercase;">
+        {{ page.title }}
+      </h1>
+    </header>
+
+    <div class="rte" style="color: #ccc; line-height: 1.6; font-size: 1.1rem;">
+      {{ page.content }}
+    </div>
+  </div>
+{% endif %}

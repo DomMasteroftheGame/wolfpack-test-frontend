@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#6366f1">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+  {%- else -%}
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/icon-192x192.png">
+  {%- endif -%}
+  
+  <title>{{ page_title }}</title>
+  
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+  
+  {{ content_for_header }}
+  
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Wolfpack">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- React & Game Config (Moved to Head) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <link rel="stylesheet" href="{{ 'game-app-styles.css' | asset_url }}">
+
+
+  
+  <!-- Shopify Theme Styles -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  
+  <!-- App Styles -->
+  <link rel="stylesheet" href="{{ 'game-app-styles.css' | asset_url }}">
+
+
+
+
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+  
+  <!-- Shopify Theme Scripts -->
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

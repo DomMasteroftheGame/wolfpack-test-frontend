@@ -1,0 +1,226 @@
+/* Custom styles for navigation and PWA integration */
+.site-nav__link {
+  font-weight: bold;
+  color: var(--colorPrimary, #4a4a4a);
+}
+
+.site-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.header-item--logo img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* PWA styling */
+.coffee-corner-app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.coffee-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.coffee-product {
+  flex: 1;
+  min-width: 250px;
+  padding: 15px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.coffee-product img {
+  max-width: 150px;
+  height: auto;
+  margin: 0 auto 15px;
+  display: block;
+}
+
+/* Navigation menu styling - Fix visibility issues */
+.site-nav,
+.site-navigation,
+.header-item--navigation {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+  z-index: 1000 !important;
+}
+
+/* Make sure the header navigation wrapper is visible */
+.header-wrapper {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Active link styling */
+.site-nav__link--active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Site nav items styling */
+.site-nav__item {
+  margin-right: 15px;
+  position: relative;
+}
+
+/* Dropdown styling */
+.site-nav__dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  background-color: #fff;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 10px 0;
+}
+
+.site-nav__item.dropdown:hover .site-nav__dropdown {
+  display: block;
+}
+
+.site-nav__dropdown-link {
+  display: block;
+  padding: 8px 15px;
+  color: var(--colorPrimary, #4a4a4a);
+  text-decoration: none;
+}
+
+/* Mobile menu toggle - only show on small screens */
+@media screen and (min-width: 769px) {
+  .mobile-nav-wrapper {
+    display: none !important;
+  }
+  
+  .mobile-nav__toggle-btn {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mobile-nav-wrapper {
+    display: block !important;
+  }
+  
+  .mobile-nav__toggle-btn {
+    display: block !important;
+  }
+  
+  /* Hide desktop nav on mobile */
+  .site-navigation.small--hide {
+    display: none !important;
+  }
+}
+
+/* Game Access Section Enhanced Styles */
+.game-access-section {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.game-access-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(139, 69, 19, 0.4) !important;
+}
+
+.game-access-btn {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-access-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.game-access-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@media (max-width: 768px) {
+  .game-access-section {
+    margin: 20px 15px !important;
+    padding: 35px 20px !important;
+  }
+  
+  .game-access-section h2 {
+    font-size: 2rem !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .game-access-section h3 {
+    font-size: 1.5rem !important;
+    margin-bottom: 18px !important;
+  }
+  
+  .game-access-section p {
+    font-size: 1rem !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .game-access-btn {
+    padding: 15px 30px !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.5px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-access-section {
+    margin: 15px 10px !important;
+    padding: 25px 15px !important;
+  }
+  
+  .game-access-section h2 {
+    font-size: 1.8rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .game-access-section h3 {
+    font-size: 1.3rem !important;
+    margin-bottom: 15px !important;
+  }
+  
+  .game-access-section p {
+    font-size: 0.95rem !important;
+  }
+  
+  .game-access-btn {
+    padding: 12px 25px !important;
+    font-size: 1rem !important;
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+#game-page-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

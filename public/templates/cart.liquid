@@ -1,0 +1,58 @@
+<div class="page-width" style="max-width: 1000px; margin: 4rem auto; padding: 0 2rem;">
+  <h1 class="text-center" style="color: var(--color-gold); margin-bottom: 3rem;">Your Cart</h1>
+
+  {% if cart.item_count > 0 %}
+    {% form 'cart', cart %}
+      <div class="cart__items" style="border-top: 1px solid #333;">
+        {% for item in cart.items %}
+          <div class="cart__item" style="display: grid; grid-template-columns: 100px 1fr auto; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid #333; align-items: center;">
+            
+            <!-- Image -->
+            <div class="cart__image">
+              <a href="{{ item.url }}">
+                {% if item.image != blank %}
+                  <img src="{{ item.image | img_url: '200x200' }}" alt="{{ item.image.alt | escape }}" style="width: 100%; height: auto; border: 1px solid #333;">
+                {% else %}
+                  <div style="width: 100px; height: 100px; background: #222;"></div>
+                {% endif %}
+              </a>
+            </div>
+
+            <!-- Details -->
+            <div class="cart__details">
+              <a href="{{ item.url }}" style="color: #fff; font-weight: bold; font-size: 1.1rem; text-decoration: none;">{{ item.product.title }}</a>
+              {% unless item.product.has_only_default_variant %}
+                <p style="color: #999; margin: 0.5rem 0;">{{ item.variant.title }}</p>
+              {% endunless %}
+              <p style="color: var(--color-gold); margin-top: 0.5rem;">{{ item.price | money }}</p>
+            </div>
+
+            <!-- Quantity & Remove -->
+            <div class="cart__actions" style="text-align: right;">
+              <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" style="width: 60px; padding: 0.5rem; background: #000; border: 1px solid #333; color: #fff; text-align: center; margin-bottom: 0.5rem;">
+              <br>
+              <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0" style="color: #666; font-size: 0.9rem; text-decoration: underline;">Remove</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart__footer" style="margin-top: 3rem; text-align: right;">
+        <div class="cart__subtotal" style="margin-bottom: 2rem;">
+          <span style="color: #999; font-size: 1.2rem; margin-right: 1rem;">Subtotal</span>
+          <span style="color: var(--color-gold); font-size: 1.5rem; font-weight: bold;">{{ cart.total_price | money }}</span>
+        </div>
+        
+        <p style="color: #666; margin-bottom: 2rem;">Taxes and shipping calculated at checkout</p>
+        
+        <button type="submit" name="update" class="btn" style="padding: 1rem 2rem; background: transparent; border: 1px solid #666; color: #fff; margin-right: 1rem; cursor: pointer;">Update Cart</button>
+        <button type="submit" name="checkout" class="btn" style="padding: 1rem 3rem; background: var(--color-gold); color: #000; font-weight: bold; border: none; cursor: pointer;">Check Out</button>
+      </div>
+    {% endform %}
+  {% else %}
+    <div class="text-center" style="padding: 4rem 0;">
+      <p style="color: #999; font-size: 1.2rem; margin-bottom: 2rem;">Your cart is currently empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn" style="padding: 1rem 2rem; background: var(--color-gold); color: #000; font-weight: bold; text-decoration: none;">Continue Shopping</a>
+    </div>
+  {% endif %}
+</div>

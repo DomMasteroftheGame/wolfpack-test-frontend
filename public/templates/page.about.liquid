@@ -1,0 +1,86 @@
+<div class="about-page">
+  
+  <!-- PART 1: THE HERO (The Architect) -->
+  <div class="about-hero-split" style="display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; background: #111;">
+    <!-- Image Side -->
+    <div class="hero-image" style="background: url('{{ "about-hero.jpg" | asset_url }}') center/cover no-repeat; min-height: 400px; position: relative;">
+      <!-- Fallback if image fails -->
+      <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3);"></div>
+    </div>
+    
+    <!-- Text Side -->
+    <div class="hero-content" style="display: flex; flex-direction: column; justify-content: center; padding: 4rem; background: #1a1a1a;">
+      <h1 style="color: var(--color-gold); font-size: 3rem; text-transform: uppercase; line-height: 1.1; margin-bottom: 1rem;">The Architect of the Pack</h1>
+      <h2 style="color: #fff; font-size: 1.2rem; font-weight: normal; margin-bottom: 2rem; opacity: 0.8;">Building games, brewing culture, and connecting the hungry.</h2>
+      
+      <div class="bio-text" style="color: #ccc; line-height: 1.6; font-size: 1.1rem; margin-bottom: 2rem;">
+        <p>I’m Dominique Harris. I built BuildYourWolfpack with a simple mission: to gamify the hustle and fuel the players. Whether you're here to dominate the leaderboard, stock your office, or connect for a strategy session, you're in the right place. This isn't just a coffee brand—it's a network.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2: THE ACTION GRID (The Blueprint) -->
+  <div class="page-width" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
+    <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+      
+      <!-- Box 1: The Support (Donate) -->
+      <div class="action-card" style="background: #1a1a1a; border: 1px solid #333; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">☕️</div>
+          <h3 style="color: #fff; margin-bottom: 1rem;">Fuel the Mission</h3>
+          <p style="color: #999; margin-bottom: 2rem;">Love the content or the game? Support the build directly.</p>
+        </div>
+        <a href="#" class="btn" style="display: inline-block; padding: 0.8rem 1.5rem; border: 2px solid #666; color: #fff; font-weight: bold; text-decoration: none; transition: all 0.3s;">
+          Buy Me a Coffee
+        </a>
+      </div>
+
+      <!-- Box 2: The Fuel (Shop) -->
+      <div class="action-card" style="background: #1a1a1a; border: 1px solid var(--color-gold); padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; transform: scale(1.02);">
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
+          <h3 style="color: var(--color-gold); margin-bottom: 1rem;">Fuel Your Grind</h3>
+          <p style="color: #ccc; margin-bottom: 2rem;">Premium roasts for the retail hustler or commercial bulk buys.</p>
+        </div>
+        <a href="/collections/all-coffee-tea-products" class="btn" style="display: inline-block; padding: 0.8rem 1.5rem; background: var(--color-gold); color: #000; font-weight: bold; text-decoration: none;">
+          Shop the Roasts
+        </a>
+      </div>
+
+      <!-- Box 3: The Strategy (Meeting) -->
+      <div class="action-card" style="background: #1a1a1a; border: 1px solid #333; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">📅</div>
+          <h3 style="color: #fff; margin-bottom: 1rem;">Coffee Date</h3>
+          <p style="color: #999; margin-bottom: 2rem;">Let's talk business, strategy, and wolfpack growth.</p>
+        </div>
+        <a href="#" class="btn" style="display: inline-block; padding: 0.8rem 1.5rem; border: 2px solid var(--color-gold); color: var(--color-gold); font-weight: bold; text-decoration: none;">
+          Book a Session
+        </a>
+      </div>
+
+      <!-- Box 4: The Network (LinkedIn) -->
+      <div class="action-card" style="background: #1a1a1a; border: 1px solid #333; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">👔</div>
+          <h3 style="color: #fff; margin-bottom: 1rem;">The Professional</h3>
+          <p style="color: #999; margin-bottom: 2rem;">Connect with my professional network and see the background behind the brand.</p>
+        </div>
+        <a href="https://www.linkedin.com/in/dominique-harris-396b0058/" target="_blank" class="btn" style="display: inline-block; padding: 0.8rem 1.5rem; background: #0077b5; color: #fff; font-weight: bold; text-decoration: none;">
+          Connect on LinkedIn
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .about-hero-split { grid-template-columns: 1fr; }
+    .hero-image { min-height: 300px; }
+    .hero-content { padding: 2rem; }
+    .action-card { transform: none !important; }
+  }
+</style>

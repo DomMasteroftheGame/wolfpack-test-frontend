@@ -1,0 +1,65 @@
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="rte">
+        <div id="root-game" style="min-height: 800px; width: 100%; border: 2px solid #eaeaea;">
+          <div style="padding: 100px; text-align: center;">
+            <h2>🐺 Loading Wolfpack Dashboard...</h2>
+            <p>Status: Template Override Active...</p>
+          </div>
+        </div>
+
+        <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <link rel="stylesheet" href="{{ 'main.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'game-app-styles.css' | asset_url }}">
+
+        <script>
+          (function() {
+            console.clear();
+            console.log("%c 🐺 TEMPLATE FORCE: ACTIVATED ", "background: purple; color: white; font-size: 20px;");
+
+            var bundleUrl = "{{ 'game-app-bundle.js' | asset_url }}";
+            var baseUrl = bundleUrl.split('game-app-bundle.js')[0];
+            if (baseUrl.indexOf('//') === 0) baseUrl = 'https:' + baseUrl;
+            
+            // AUTO-DETECT CURRENT PATH
+            var currentPath = window.location.pathname;
+
+            window.shopifyCdnPath = baseUrl;
+            window.__webpack_public_path__ = baseUrl;
+            
+            window.pwaThemeVariables = {
+              assetsUrl: baseUrl,
+              publicPath: baseUrl,
+              vendorPath: baseUrl + "vendor.js",
+              cssPath: baseUrl + "main.css",
+              logoPath: baseUrl + "wolfpack-logo.png",
+              
+              // FORCE LOGIN
+              isAuthenticated: true,
+              user: { id: 99999, email: "alpha@buildyourwolfpack.com", name: "Alpha Wolf" },
+              
+              // FORCE DASHBOARD ROUTING
+              gamePageHandle: 'gameboard-leaderboard-1',
+              routes: {
+                home: currentPath,
+                game: currentPath,
+                dashboard: currentPath, 
+                leaderboard: currentPath
+              }
+            };
+
+            console.log("✅ TEMPLATE FORCE: Route locked to " + currentPath);
+          })();
+        </script>
+        <script src="{{ 'game-app-bundle.js' | asset_url }}" type="module"></script>
+        </div>
+    </div>
+  </div>
+</div>

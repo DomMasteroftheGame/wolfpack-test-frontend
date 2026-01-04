@@ -1,0 +1,91 @@
+{% layout none %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Psycho Wolf Protocol</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#8B4513">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="{{ 'game-app-bundle.js' | asset_url }}" as="script">
+  <link rel="preload" href="{{ 'game-app-styles.css' | asset_url }}" as="style">
+  
+  <!-- Load PWA styles -->
+  <link rel="stylesheet" href="{{ 'game-app-styles.css' | asset_url }}">
+  
+  <style>
+    body { margin: 0; padding: 0; background: #1a1a1a; color: white; font-family: sans-serif; }
+    #root-game { min-height: 100vh; }
+  </style>
+</head>
+<body>
+
+  <!-- Game Container -->
+  <div id="root-game" style="min-height: 800px; width: 100%;">
+    <div style="padding: 50px; text-align: center;">
+      <h2>🐺 Loading Wolfpack Gameboard...</h2>
+      <p>(Bypassing Login Check...)</p>
+    </div>
+  </div>
+
+  <!-- Final Fix: Load React 17 and Config before Bundle -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+
+  <link rel="stylesheet" href="{{ 'game-app-styles.css' | asset_url }}">
+
+  <script>
+    (function() {
+      console.log("🐺 BYPASS FIX: Initializing...");
+
+      // Capture Base URL from Liquid
+      var bundleUrl = "{{ 'game-app-bundle.js' | asset_url }}";
+      var baseUrl = bundleUrl.split('game-app-bundle.js')[0];
+      if (baseUrl.indexOf('//') === 0) baseUrl = 'https:' + baseUrl;
+
+      // Set Globals
+      window.shopifyCdnPath = baseUrl;
+      window.__webpack_public_path__ = baseUrl;
+      
+      // Set Theme Variables
+      window.pwaThemeVariables = {
+        assetsUrl: baseUrl,
+        publicPath: baseUrl,
+        vendorPath: baseUrl + "vendor-scripts-v11.js",
+        cssPath: baseUrl + "game-app-styles.css",
+        logoPath: baseUrl + "wolfpack-logo.png",
+        // Explicitly tell the app where to render
+        rootId: 'root-game',
+        gameContainerId: 'root-game',
+        
+        // Force the game to think we are logged in
+        isAuthenticated: true,
+        user: {
+          id: 99999,
+          email: "alpha@buildyourwolfpack.com",
+          firstName: "Alpha",
+          lastName: "Wolf",
+          name: "Alpha Wolf"
+        }
+      };
+
+      console.log("🐺 BYPASS FIX: Mock User injected.");
+
+      // Check React
+      if (window.React) {
+        console.log("✅ PAGE FIX: React 17 is ready.");
+      } else {
+        console.error("❌ PAGE FIX: React failed to load.");
+      }
+    })();
+  </script>
+
+  <script src="{{ 'game-app-bundle.js' | asset_url }}" type="module"></script>
+
+</body>
+</html>

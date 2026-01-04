@@ -1,0 +1,63 @@
+{% layout none %}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Wolfpack Game</title>
+
+    <!-- Wolfpack App Styles -->
+    {{ 'game-app-styles.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      window.pwaThemeVariables = {
+        assetsUrl: "{{ 'wolfpack-logo.png' | asset_url | split: 'wolfpack-logo.png' | first }}",
+        shopUrl: '{{ shop.url }}',
+        apiUrl: 'https://buildyourwolfpack-1.onrender.com',
+        gameAssets: {
+          logoGold: "{{ 'wolfpack-logo.png' | asset_url }}",
+          cardLabor: "{{ 'wolfpack-logo.png' | asset_url }}",
+          cardFinance: "{{ 'wolfpack-logo.png' | asset_url }}",
+          cardSales: "{{ 'wolfpack-logo.png' | asset_url }}",
+        },
+      };
+
+      // GLOBAL ERROR TRAP (BSOD)
+      window.onerror = function (msg, url, line, col, error) {
+        var root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = `
+                <div style="background:black; color:red; font-family:monospace; padding:20px; height:100vh; overflow:auto;">
+                    <h1>FATAL ERROR DETECTED</h1>
+                    <h2>${msg}</h2>
+                    <p>${url}:${line}:${col}</p>
+                    <pre>${error ? error.stack : 'No stack trace'}</pre>
+                </div>
+             `;
+        }
+      };
+    </script>
+  </head>
+  <body style="margin:0; padding:0; background:#111; overflow:hidden;">
+    <!-- DEBUG MODE -->
+    <div style="background:red;color:white;padding:20px;text-align:center;">DEBUG MODE: v3.4-FINAL</div>
+    <div id="root"></div>
+
+    <!-- Wolfpack App Script -->
+    <script
+      src="{{ 'game-app-bundle-final.js' | asset_url }}"
+      type="module"
+      defer="defer"
+      onerror="document.body.innerHTML='<h1 style=color:red>BUNDLE FAILED TO LOAD</h1>'"
+    ></script>
+
+    <!-- Back to Shop Button (Overlay) -->
+    <a
+      href="/"
+      style="position: fixed; top: 20px; left: 20px; z-index: 9999; color: #FFD700; text-decoration: none; font-family: sans-serif; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px 20px; border: 1px solid #FFD700;"
+    >
+      &larr; BACK TO COMMAND CENTER
+    </a>
+  </body>
+</html>

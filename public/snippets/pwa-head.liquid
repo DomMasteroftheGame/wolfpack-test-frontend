@@ -1,0 +1,27 @@
+<!-- PWA Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Build Your Wolfpack">
+<link rel="apple-touch-icon" href="{{ 'icon-192x192.png' | asset_url }}">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="{{ 'manifest.json' | asset_url }}">
+
+<!-- PWA Theme Color -->
+<meta name="theme-color" content="{{ settings.color_button }}">
+
+<!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('{{ 'service-worker.js' | asset_url }}')
+        .then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+    });
+  }
+</script>
