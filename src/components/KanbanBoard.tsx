@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import CreateTaskModal from './CreateTaskModal';
 import { Task as GlobalTask, User, MatchProfile } from '../types';
-import { Clock, Flame, Ghost } from 'lucide-react';
+import { KanbanCard } from './KanbanCard';
+import { useWolfPackLogic } from '../hooks/useWolfPackLogic';
 
 // Use GlobalTask but ensure it has string ID for dnd
 type Task = GlobalTask & { id: string };
@@ -28,27 +29,14 @@ interface KanbanBoardProps {
     onOutsource?: (taskData: any) => void;
 }
 
-// --- HELPER: Phase Colors ---
-const getPhaseColor = (stepNumber: number) => {
-    if (stepNumber <= 14) return 'text-labor border-labor'; // BUILD (Red)
-    if (stepNumber <= 28) return 'text-sales border-sales'; // MEASURE (Cyan/Blue - using Sales color for now as proxy for Cyan)
-    return 'text-gold border-gold'; // LEARN (Gold)
-};
-
-const getPaceColor = (pace: string) => {
-    switch (pace) {
-        case 'run': return 'text-red-500';
-        case 'walk': return 'text-orange-500';
-        case 'crawl': return 'text-blue-400';
-        default: return 'text-gray-500';
-    }
-};
-
 const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onUpdateTask, currentUser, packMembers, onOutsource }) => {
     const [data, setData] = useState<Data>({ tasks: {}, columns: {}, columnOrder: [] });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<Partial<Task> | undefined>(undefined);
     const [pendingDrag, setPendingDrag] = useState<{ draggableId: string, destinationIndex: number } | null>(null);
+    
+    // Hook into the Wolf Pack Logic (Antigravity Handshake)
+    const { moveWolf } = useWolfPackLogic();
 
     // Sync with parent tasks
     useEffect(() => {
@@ -61,10 +49,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
             const id = t.id.toString();
             tasksMap[id] = { ...t, id } as Task;
 
-            if (t.status === 'done') feastIds.push(id);
-            else if (t.status === 'doing') chaseIds.push(id);
-            else huntIds.push(id); // Combine Backlog & Todo into "The Hunt" for simplicity or keep separate? 
-            // Master Architect says: THE HUNT (Backlog/To Do), THE CHASE (Doing), THE FEAST (Done).
+            if (t.status === 'done' || t.status === 'feast') feastIds.push(id);
+            else if (t.status === 'doing' || t.status === 'chase') chaseIds.push(id);
+            else huntIds.push(id); 
         });
 
         setData({
@@ -135,22 +122,25 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
             },
         });
 
-        // Notify Parent (Map internal columns to status)
-        let newStatus = 'todo';
-        if (destination.droppableId === 'chase') newStatus = 'doing';
-        if (destination.droppableId === 'feast') newStatus = 'done';
-        if (destination.droppableId === 'hunt') newStatus = 'todo';
+        // Notify Parent & Antigravity
+        let newStatus = 'hunt';
+        if (destination.droppableId === 'chase') newStatus = 'chase'; // or 'doing'
+        if (destination.droppableId === 'feast') newStatus = 'feast'; // or 'done'
+        if (destination.droppableId === 'hunt') newStatus = 'hunt';   // or 'todo'
 
-        const updatedTask = { ...data.tasks[draggableId], status: newStatus as any };
-        onUpdateTask(updatedTask);
+        // Call the handshake hook
+        moveWolf(draggableId, newStatus);
     };
 
     const handleModalSave = (updatedTask: Partial<GlobalTask>) => {
         if (pendingDrag) {
             const { draggableId } = pendingDrag;
             const task = data.tasks[draggableId];
-            const newTask = { ...task, ...updatedTask, status: 'doing' } as Task; // Commit to Chase
-            onUpdateTask(newTask);
+            const newTask = { ...task, ...updatedTask, status: 'chase' } as Task; 
+            
+            // Call the handshake hook
+            moveWolf(draggableId, 'chase');
+            
             setPendingDrag(null);
         } else if (editingTask) {
             const task = data.tasks[editingTask.id!];
@@ -167,9 +157,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-void/90 backdrop-blur shrink-0">
                 <h2 className="text-xl font-heading text-white tracking-widest">TACTICAL BOARD <span className="text-gold text-xs align-top">LIVE</span></h2>
                 <div className="flex gap-4 text-[10px] font-mono text-gray-500 uppercase">
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-labor rounded-full"></span> BUILD</span>
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-sales rounded-full"></span> MEASURE</span>
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-gold rounded-full"></span> LEARN</span>
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-yellow-500 rounded-full"></span> BUILD</span>
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-cyan-500 rounded-full"></span> MEASURE</span>
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-pink-500 rounded-full"></span> LEARN</span>
                 </div>
             </div>
 
@@ -212,66 +202,24 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                 snapshot.isDraggingOver ? 'bg-white/5' : ''
                                             }`}
                                         >
-                                            {tasks.map((task, index) => {
-                                                const phaseColors = getPhaseColor(task.step_number || 1);
-                                                const paceColor = getPaceColor(task.pace || 'walk');
-
-                                                return (
-                                                    <Draggable key={task.id} draggableId={task.id} index={index}>
-                                                        {(provided, snapshot) => (
-                                                            <div
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                id={`task-${task.id}`} // For scroll targeting
-                                                                className={`
-                                                                    relative p-4 rounded-sm border bg-charcoal transition-all group
-                                                                    ${isHunt ? 'opacity-60 hover:opacity-100 border-gray-800' : ''}
-                                                                    ${isChase ? `opacity-100 border-l-4 ${paceColor.replace('text', 'border')} border-y-gray-700 border-r-gray-700 shadow-lg` : ''}
-                                                                    ${isFeast ? 'opacity-100 border-gold shadow-neon-gold' : ''}
-                                                                    ${snapshot.isDragging ? 'scale-105 z-50 shadow-2xl ring-1 ring-gold' : ''}
-                                                                `}
-                                                                style={{ ...provided.draggableProps.style }}
-                                                                onClick={() => setEditingTask(task)} // Quick Edit
-                                                            >
-                                                                {/* Header: Phase & Title */}
-                                                                <div className="flex justify-between items-start mb-2">
-                                                                    <div className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 border rounded-sm mb-1 inline-block ${phaseColors}`}>
-                                                                        STEP {task.step_number || '?'}
-                                                                    </div>
-                                                                    {task.ivp_value && (
-                                                                        <div className="text-[9px] font-mono text-gold font-bold">{task.ivp_value} IVP</div>
-                                                                    )}
-                                                                </div>
-                                                                
-                                                                <h3 className={`font-bold text-sm leading-tight mb-3 ${isHunt ? 'text-gray-400' : 'text-white'}`}>
-                                                                    {task.title}
-                                                                </h3>
-
-                                                                {/* Footer: Wolf & Heat */}
-                                                                <div className="flex justify-between items-end pt-2 border-t border-gray-800/50">
-                                                                    {/* Assigned Wolf */}
-                                                                    <div className="flex items-center gap-2">
-                                                                        {task.assigned_to && task.assigned_to.length > 0 ? (
-                                                                            <div className="w-5 h-5 rounded-full bg-gray-700 border border-gray-600 flex items-center justify-center text-[8px] text-white font-bold">
-                                                                                {task.assigned_to[0].slice(0, 2).toUpperCase()}
-                                                                            </div>
-                                                                        ) : (
-                                                                            <Ghost className="w-4 h-4 text-gray-600" />
-                                                                        )}
-                                                                    </div>
-
-                                                                    {/* Heat Meter */}
-                                                                    <div className="flex items-center gap-1">
-                                                                        <Flame className={`w-3 h-3 ${paceColor}`} />
-                                                                        <span className={`text-[9px] font-black uppercase ${paceColor}`}>{task.pace || 'WALK'}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                );
-                                            })}
+                                            {tasks.map((task, index) => (
+                                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                                    {(provided, snapshot) => (
+                                                        <div
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            id={`task-${task.id}`} // For scroll targeting
+                                                            style={{ ...provided.draggableProps.style }}
+                                                        >
+                                                            <KanbanCard 
+                                                                task={task} 
+                                                                onClick={() => setEditingTask(task)} 
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
                                             {provided.placeholder}
                                         </div>
                                     )}
