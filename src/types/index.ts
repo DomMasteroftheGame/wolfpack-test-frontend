@@ -9,6 +9,15 @@ export interface User {
   invites_count: number;
   level: number;
   referred_by_id?: string | null;
+  // Extended properties for Game Logic
+  ivp?: number;
+  classType?: 'labor' | 'finance' | 'sales';
+  stats?: {
+    kill: number;
+    assist: number;
+    death: number;
+  };
+  alphaPitch?: AlphaPitch;
 }
 
 export interface Card {

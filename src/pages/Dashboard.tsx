@@ -11,16 +11,7 @@ import WolfProfileModal from '../components/WolfProfileModal';
 import Toast from '../components/Toast';
 import { useAuth } from '../contexts/AuthContext';
 import { useProject } from '../contexts/ProjectContext';
-
-// --- HELPER: Role Config for UI ---
-const getRoleConfig = (role: string | null | undefined) => {
-  switch (role) {
-    case 'labor': return { label: 'The Builder', icon: '🛠️', colors: { text: 'text-labor', border: 'border-labor', shadow: 'shadow-neon-red' } };
-    case 'finance': return { label: 'The Capital', icon: '💰', colors: { text: 'text-finance', border: 'border-finance', shadow: 'shadow-neon-green' } };
-    case 'sales': return { label: 'The Connector', icon: '🤝', colors: { text: 'text-sales', border: 'border-sales', shadow: 'shadow-neon-blue' } };
-    default: return { label: 'Unassigned', icon: '❓', colors: { text: 'text-gray-500', border: 'border-gray-600', shadow: 'shadow-none' } };
-  }
-};
+import { GameHUD } from '../components/GameHUD';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -42,8 +33,6 @@ const Dashboard: React.FC = () => {
       </div>
     );
   }
-
-  const roleConfig = getRoleConfig(currentUser.selected_card_id as any);
 
   // --- HANDLERS ---
   const handleTaskUpdate = async (updatedTask: Task) => {
@@ -71,75 +60,49 @@ const Dashboard: React.FC = () => {
     }, 100);
   };
 
+  const handleViewChange = (newView: ViewMode) => {
+      setView(newView);
+      // Auto-enable Mirror Mode for Pack/Kanban on desktop
+      if (newView === 'pack' || newView === 'kanban') {
+          setIsMirrorMode(true);
+      } else {
+          setIsMirrorMode(false);
+      }
+  };
+
   return (
     <div className="min-h-screen bg-void text-white font-mono flex flex-col overflow-hidden">
       
-      {/* --- TACTICAL COMMAND BAR (Header) --- */}
-      <header className="h-16 bg-void/90 backdrop-blur-md border-b border-gray-800 flex items-center justify-between px-4 md:px-6 shrink-0 z-50 sticky top-0">
-        
-        {/* Left: Brand & Status */}
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-gold rounded flex items-center justify-center text-black font-bold text-xl shadow-neon-gold">
-            W
-          </div>
-          <div className="hidden md:block">
-            <h1 className="font-heading text-lg tracking-widest text-white leading-none">WOLFPACK <span className="text-gold">OS</span></h1>
-            <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">V.35.0 // MIRROR PROTOCOL</div>
-          </div>
-        </div>
-
-        {/* Right: Stats & Profile */}
-        <div className="flex items-center gap-6">
-          {/* IVP Score (The Ego) */}
-          <div className="hidden md:flex flex-col items-end">
-            <div className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Intrinsic Value</div>
-            <div className="text-2xl font-mono font-bold text-gold leading-none">
-              {(currentUser.ivp || 0).toLocaleString()} <span className="text-xs text-gray-600">IVP</span>
-            </div>
-          </div>
-
-          {/* User Profile */}
-          <div className="flex items-center gap-3 pl-6 border-l border-gray-800">
-            <div className="text-right hidden sm:block">
-              <div className="font-bold text-sm text-gray-300">{currentUser.email.split('@')[0]}</div>
-              <div className={`text-[10px] uppercase font-bold tracking-widest ${roleConfig.colors.text}`}>
-                {roleConfig.label}
-              </div>
-            </div>
-            <div className={`w-10 h-10 rounded-full border-2 ${roleConfig.colors.border} bg-gray-900 overflow-hidden shadow-lg`}>
-              <img src={`https://ui-avatars.com/api/?name=${currentUser.email}&background=random`} alt="Profile" />
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* --- HEADS-UP DISPLAY (HUD) --- */}
+      <GameHUD currentView={view} onViewChange={handleViewChange} />
 
       {/* --- MAIN LAYOUT --- */}
-      <div className="flex-1 flex overflow-hidden relative">
+      <div className="flex-1 flex overflow-hidden relative pt-16">
         
         {/* --- TACTICAL RAIL (Sidebar) --- */}
         <nav className="hidden md:flex w-64 bg-charcoal border-r border-gray-800 flex-col shrink-0 z-40">
           <div className="p-4 space-y-2">
             <NavButton 
               active={view === 'pack' || (isMirrorMode && view === 'kanban')} 
-              onClick={() => { setView('pack'); setIsMirrorMode(true); }} 
+              onClick={() => handleViewChange('pack')} 
               icon="⚔️" 
               label="War Room" 
             />
             <NavButton 
               active={view === 'radar' && !isMirrorMode} 
-              onClick={() => { setView('radar'); setIsMirrorMode(false); }} 
+              onClick={() => handleViewChange('radar')} 
               icon="📡" 
               label="Wolf Search" 
             />
             <NavButton 
               active={view === 'roadmap' && !isMirrorMode} 
-              onClick={() => { setView('roadmap'); setIsMirrorMode(false); }} 
+              onClick={() => handleViewChange('roadmap')} 
               icon="🗺️" 
               label="Roadmap" 
             />
             <NavButton 
               active={view === 'coffee' && !isMirrorMode} 
-              onClick={() => { setView('coffee'); setIsMirrorMode(false); }} 
+              onClick={() => handleViewChange('coffee')} 
               icon="☕" 
               label="Coffee Dates" 
             />
@@ -215,10 +178,10 @@ const Dashboard: React.FC = () => {
 
       {/* --- MOBILE TACTICAL BELT (Bottom Nav) --- */}
       <nav className="md:hidden h-16 bg-charcoal border-t border-gray-800 flex items-center justify-around px-2 shrink-0 z-50 pb-safe">
-        <MobileNavButton active={view === 'pack'} onClick={() => setView('pack')} icon="📡" label="RADAR" />
-        <MobileNavButton active={view === 'kanban'} onClick={() => setView('kanban')} icon="📋" label="BOARD" />
-        <MobileNavButton active={view === 'radar'} onClick={() => setView('radar')} icon="🐺" label="WOLVES" />
-        <MobileNavButton active={view === 'coffee'} onClick={() => setView('coffee')} icon="☕" label="COFFEE" />
+        <MobileNavButton active={view === 'pack'} onClick={() => handleViewChange('pack')} icon="📡" label="RADAR" />
+        <MobileNavButton active={view === 'kanban'} onClick={() => handleViewChange('kanban')} icon="📋" label="BOARD" />
+        <MobileNavButton active={view === 'radar'} onClick={() => handleViewChange('radar')} icon="🐺" label="WOLVES" />
+        <MobileNavButton active={view === 'coffee'} onClick={() => handleViewChange('coffee')} icon="☕" label="COFFEE" />
       </nav>
 
       {/* --- MODALS & TOASTS --- */}
