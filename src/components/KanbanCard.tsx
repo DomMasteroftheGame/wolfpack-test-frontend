@@ -1,65 +1,89 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { SECTOR_COLORS } from '../data/gameSteps';
 import { Task } from '../types';
+import { motion } from 'framer-motion';
+import { Hammer, Ruler, Brain, Flame, Clock } from 'lucide-react';
 
 interface KanbanCardProps {
-  task: Task;
-  onClick?: () => void;
+    task: Task;
+    onClick: () => void;
 }
 
+// SECTOR COLORS (Aligned with Master Architect)
+const SECTOR_COLORS = {
+    build: { border: 'border-yellow-500', text: 'text-yellow-500', bg: 'bg-yellow-500/10', icon: <Hammer size={14} /> },
+    measure: { border: 'border-cyan-500', text: 'text-cyan-500', bg: 'bg-cyan-500/10', icon: <Ruler size={14} /> },
+    learn: { border: 'border-pink-500', text: 'text-pink-500', bg: 'bg-pink-500/10', icon: <Brain size={14} /> },
+};
+
 export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
-  // Determine Sector based on step number (mock logic if not explicit)
-  const stepNumber = task.step_number || 1;
-  let sector: 'BUILD' | 'MEASURE' | 'LEARN' = 'BUILD';
-  if (stepNumber > 14) sector = 'MEASURE';
-  if (stepNumber > 28) sector = 'LEARN';
+    // Determine phase based on step number if not explicit, or default to 'build'
+    let phase = task.phase || 'build';
+    const stepNumber = task.step_number || 1;
+    if (!task.phase) {
+        if (stepNumber > 14) phase = 'measure';
+        if (stepNumber > 28) phase = 'learn';
+    }
 
-  const colorClass = SECTOR_COLORS[sector];
-  const heat = task.pace === 'run' ? 9 : task.pace === 'walk' ? 5 : 2; // Mock heat based on pace
+    const style = SECTOR_COLORS[phase as keyof typeof SECTOR_COLORS] || SECTOR_COLORS.build;
+    
+    // High Heat Logic (If heatLevel > 7, show red pulse)
+    const heatLevel = task.heatLevel || (task.pace === 'run' ? 9 : task.pace === 'walk' ? 5 : 2);
+    const isHighHeat = heatLevel > 7;
 
-  return (
-    <motion.div 
-      whileHover={{ scale: 1.02 }}
-      onClick={onClick}
-      className={`
-        relative bg-gray-900 border-l-4 p-4 mb-3 rounded-r-lg 
-        ${colorClass.split(' ')[0]} ${colorClass.split(' ')[1]}
-        shadow-lg backdrop-blur-sm cursor-pointer group transition-all
-      `}
-    >
-      {/* Header: Step Number & Title */}
-      <div className="flex justify-between items-start mb-2">
-        <span className="text-[10px] font-mono text-gray-400 tracking-widest">
-          STEP {stepNumber.toString().padStart(2, '0')}
-        </span>
-        {heat > 7 && (
-          <span className="animate-pulse text-[10px] text-red-500 font-bold border border-red-500/50 px-1 rounded bg-red-500/10">
-            ⚠️ HIGH HEAT
-          </span>
-        )}
-      </div>
+    return (
+        <motion.div
+            layoutId={task.id}
+            onClick={onClick}
+            className={`
+                relative p-4 rounded-lg border-l-4 bg-gray-900/80 backdrop-blur-sm
+                hover:bg-gray-800 transition-all cursor-pointer group mb-3
+                ${style.border}
+                ${isHighHeat ? 'shadow-[0_0_15px_rgba(239,68,68,0.2)] animate-pulse-slow' : ''}
+            `}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+        >
+            {/* Header: Phase Icon & Title */}
+            <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-2">
+                    <span className={`p-1 rounded ${style.bg} ${style.text}`}>
+                        {style.icon}
+                    </span>
+                    <h3 className="text-sm font-bold text-white line-clamp-2 group-hover:text-gold transition-colors">
+                        {task.title}
+                    </h3>
+                </div>
+                {isHighHeat && <Flame size={14} className="text-red-500 animate-pulse" />}
+            </div>
 
-      <h3 className="text-white font-bold uppercase tracking-wide text-sm mb-3 group-hover:text-gold transition-colors">
-        {task.title}
-      </h3>
+            {/* Body: Description Preview */}
+            <p className="text-[10px] text-gray-400 mb-3 line-clamp-2 font-mono">
+                {task.description || "No mission briefing provided."}
+            </p>
 
-      {/* Footer: Tactical Stats */}
-      <div className="mt-2 flex items-center justify-between border-t border-gray-800 pt-2">
-        <div className="flex items-center space-x-2">
-           {/* "Grind" Indicator */}
-           <span className="text-[8px] text-gray-500 font-mono">GRIND</span>
-           <div className="h-1.5 w-16 bg-gray-800 rounded-full overflow-hidden">
-             <div 
-               className={`h-full ${heat > 7 ? 'bg-red-500' : 'bg-white'}`} 
-               style={{ width: `${(heat / 10) * 100}%` }} 
-             />
-           </div>
-        </div>
-        <button className={`text-[10px] font-mono uppercase ${colorClass.split(' ')[2] || 'text-white'} opacity-0 group-hover:opacity-100 transition-opacity`}>
-          [ OPEN INTEL ]
-        </button>
-      </div>
-    </motion.div>
-  );
+            {/* Footer: Stats & Heat Meter */}
+            <div className="flex items-center justify-between border-t border-gray-800 pt-2">
+                <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                    <Clock size={12} />
+                    <span>{task.deadline ? new Date(task.deadline).toLocaleDateString() : 'No Intel'}</span>
+                </div>
+                
+                {/* Visual Heat Meter */}
+                <div className="flex items-center gap-1" title={`Heat Level: ${heatLevel}/10`}>
+                    <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                            <div 
+                                key={i} 
+                                className={`w-1 h-3 rounded-sm ${
+                                    i < Math.ceil(heatLevel / 2) 
+                                        ? (isHighHeat ? 'bg-red-500' : 'bg-gold') 
+                                        : 'bg-gray-800'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
 };

@@ -4,6 +4,7 @@ import CreateTaskModal from './CreateTaskModal';
 import { Task as GlobalTask, User, MatchProfile } from '../types';
 import { KanbanCard } from './KanbanCard';
 import { useWolfPackLogic } from '../hooks/useWolfPackLogic';
+import { Target, Zap, Trophy, Hammer, Ruler, Brain } from 'lucide-react';
 
 // Use GlobalTask but ensure it has string ID for dnd
 type Task = GlobalTask & { id: string };
@@ -151,15 +152,27 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
         setEditingTask(undefined);
     };
 
+    const getColumnIcon = (id: string) => {
+        switch (id) {
+            case 'hunt': return <Target size={20} className="text-gray-500" />;
+            case 'chase': return <Zap size={20} className="text-white" />;
+            case 'feast': return <Trophy size={20} className="text-gold" />;
+            default: return null;
+        }
+    };
+
     return (
         <div className="h-full flex flex-col">
             {/* Header */}
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-void/90 backdrop-blur shrink-0">
-                <h2 className="text-xl font-heading text-white tracking-widest">TACTICAL BOARD <span className="text-gold text-xs align-top">LIVE</span></h2>
+                <h2 className="text-xl font-heading text-white tracking-widest flex items-center gap-2">
+                    <span>TACTICAL BOARD</span>
+                    <span className="text-gold text-[10px] bg-gold/10 px-1 rounded border border-gold/20 align-top">LIVE</span>
+                </h2>
                 <div className="flex gap-4 text-[10px] font-mono text-gray-500 uppercase">
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-yellow-500 rounded-full"></span> BUILD</span>
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-cyan-500 rounded-full"></span> MEASURE</span>
-                    <span className="flex items-center gap-1"><span className="w-2 h-2 bg-pink-500 rounded-full"></span> LEARN</span>
+                    <span className="flex items-center gap-1"><Hammer size={12} className="text-yellow-500" /> BUILD</span>
+                    <span className="flex items-center gap-1"><Ruler size={12} className="text-cyan-500" /> MEASURE</span>
+                    <span className="flex items-center gap-1"><Brain size={12} className="text-pink-500" /> LEARN</span>
                 </div>
             </div>
 
@@ -185,11 +198,14 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                 <div className={`p-4 border-b border-gray-800 flex items-center justify-between sticky top-0 z-10 ${
                                     isChase ? 'bg-gray-900/50' : isFeast ? 'bg-gold/10' : 'bg-transparent'
                                 }`}>
-                                    <h2 className={`text-sm font-bold uppercase tracking-widest ${
-                                        isHunt ? 'text-gray-600' : isChase ? 'text-white' : 'text-gold'
-                                    }`}>
-                                        {column.title}
-                                    </h2>
+                                    <div className="flex items-center gap-3">
+                                        {getColumnIcon(columnId)}
+                                        <h2 className={`text-sm font-bold uppercase tracking-widest ${
+                                            isHunt ? 'text-gray-600' : isChase ? 'text-white' : 'text-gold'
+                                        }`}>
+                                            {column.title}
+                                        </h2>
+                                    </div>
                                     <span className="text-[10px] font-mono bg-gray-800 text-gray-400 px-2 py-0.5 rounded-sm">{tasks.length}</span>
                                 </div>
 

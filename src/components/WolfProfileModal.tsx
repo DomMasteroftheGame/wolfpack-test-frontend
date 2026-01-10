@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MatchProfile, User, Message } from '../types';
 import { io, Socket } from 'socket.io-client';
 import GhostBar from './GhostBar';
+import { Shield, Zap, Star, MessageSquare, Info, Activity, X } from 'lucide-react';
 
 interface WolfProfileModalProps {
     wolf: MatchProfile;
@@ -90,21 +91,45 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
                     </div>
                     <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-1">{wolf.name}</h2>
                     <div className={`px-3 py-1 bg-black/60 border ${config.colors.border} rounded-full text-xs font-bold uppercase tracking-widest ${config.colors.text} flex items-center gap-2`}>
-                        <span>{config.icon}</span>
+                        <span className="text-lg">{config.icon}</span>
                         <span>{config.label}</span>
                     </div>
 
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
-                    >✕</button>
+                        className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+                        aria-label="Close"
+                    >
+                        <X size={20} />
+                    </button>
                 </div>
 
-                {/* Action Tabs */}
+                {/* Visual Action Tabs */}
                 <div className="flex border-t border-b border-gray-800 bg-gray-900/50 backdrop-blur">
-                    <button onClick={() => setTab('details')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-colors ${tab === 'details' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}>Intel</button>
-                    <button onClick={() => setTab('chat')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-colors ${tab === 'chat' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}>Comms</button>
-                    <button onClick={() => setTab('rate')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-colors ${tab === 'rate' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}>Rate</button>
+                    <button 
+                        onClick={() => setTab('details')} 
+                        className={`flex-1 py-4 flex flex-col items-center gap-1 transition-colors ${tab === 'details' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}
+                        aria-label="Details"
+                    >
+                        <Info size={18} />
+                        <span className="text-[9px] font-black uppercase tracking-widest">Intel</span>
+                    </button>
+                    <button 
+                        onClick={() => setTab('chat')} 
+                        className={`flex-1 py-4 flex flex-col items-center gap-1 transition-colors ${tab === 'chat' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}
+                        aria-label="Chat"
+                    >
+                        <MessageSquare size={18} />
+                        <span className="text-[9px] font-black uppercase tracking-widest">Comms</span>
+                    </button>
+                    <button 
+                        onClick={() => setTab('rate')} 
+                        className={`flex-1 py-4 flex flex-col items-center gap-1 transition-colors ${tab === 'rate' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}
+                        aria-label="Rate"
+                    >
+                        <Activity size={18} />
+                        <span className="text-[9px] font-black uppercase tracking-widest">Rate</span>
+                    </button>
                 </div>
 
                 {/* Content Area */}
@@ -120,12 +145,14 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
                             </div>
 
                             <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-gray-900/50 p-3 rounded border border-gray-800">
-                                    <h3 className="text-gray-500 text-[9px] uppercase font-bold mb-1">Operating Base</h3>
+                                <div className="bg-gray-900/50 p-3 rounded border border-gray-800 flex flex-col items-center text-center">
+                                    <span className="text-xl mb-1">📍</span>
+                                    <h3 className="text-gray-500 text-[9px] uppercase font-bold">Base</h3>
                                     <p className="text-white text-xs font-mono">{wolf.location}</p>
                                 </div>
-                                <div className="bg-gray-900/50 p-3 rounded border border-gray-800">
-                                    <h3 className="text-gray-500 text-[9px] uppercase font-bold mb-1">Distance</h3>
+                                <div className="bg-gray-900/50 p-3 rounded border border-gray-800 flex flex-col items-center text-center">
+                                    <span className="text-xl mb-1">📏</span>
+                                    <h3 className="text-gray-500 text-[9px] uppercase font-bold">Range</h3>
                                     <p className="text-white text-xs font-mono">{wolf.distance}</p>
                                 </div>
                             </div>
@@ -141,9 +168,10 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
 
                             <button
                                 onClick={() => onSchedule(wolf)}
-                                className="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-3 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02]"
+                                className="w-full bg-gold hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-4 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2"
                             >
-                                Initiate Coffee Protocol
+                                <span className="text-xl">☕</span>
+                                <span>Initiate Coffee Protocol</span>
                             </button>
                         </div>
                     )}
@@ -186,17 +214,42 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
                             <p className="text-gray-500 text-xs mb-6 max-w-[200px]">Rate your interaction to update the global ledger.</p>
 
                             <div className="w-full space-y-5 px-4">
-                                {['Trust', 'Skill', 'Vibe'].map(metric => (
-                                    <div key={metric} className="group">
-                                        <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-1 group-hover:text-white transition-colors">
-                                            <span>{metric}</span>
-                                            <span className="text-yellow-500 font-mono">50</span>
+                                <div className="group">
+                                    <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-1 group-hover:text-white transition-colors items-center">
+                                        <div className="flex items-center gap-2">
+                                            <Shield size={14} className="text-blue-500" />
+                                            <span>Trust</span>
                                         </div>
-                                        <input type="range" min="0" max="100" className="w-full accent-white bg-gray-800 h-1 rounded-lg appearance-none cursor-pointer" />
+                                        <span className="text-gold font-mono">50</span>
                                     </div>
-                                ))}
-                                <button className="w-full bg-white text-black py-2 rounded uppercase text-[10px] font-black tracking-widest hover:bg-gray-200 mt-4">
-                                    Submit to Blockchain
+                                    <input type="range" min="0" max="100" className="w-full accent-white bg-gray-800 h-1 rounded-lg appearance-none cursor-pointer" />
+                                </div>
+
+                                <div className="group">
+                                    <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-1 group-hover:text-white transition-colors items-center">
+                                        <div className="flex items-center gap-2">
+                                            <Star size={14} className="text-yellow-500" />
+                                            <span>Skill</span>
+                                        </div>
+                                        <span className="text-gold font-mono">50</span>
+                                    </div>
+                                    <input type="range" min="0" max="100" className="w-full accent-white bg-gray-800 h-1 rounded-lg appearance-none cursor-pointer" />
+                                </div>
+
+                                <div className="group">
+                                    <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-1 group-hover:text-white transition-colors items-center">
+                                        <div className="flex items-center gap-2">
+                                            <Zap size={14} className="text-purple-500" />
+                                            <span>Vibe</span>
+                                        </div>
+                                        <span className="text-gold font-mono">50</span>
+                                    </div>
+                                    <input type="range" min="0" max="100" className="w-full accent-white bg-gray-800 h-1 rounded-lg appearance-none cursor-pointer" />
+                                </div>
+
+                                <button className="w-full bg-white text-black py-3 rounded uppercase text-[10px] font-black tracking-widest hover:bg-gray-200 mt-4 flex items-center justify-center gap-2">
+                                    <span>⛓️</span>
+                                    <span>Submit to Blockchain</span>
                                 </button>
                             </div>
                         </div>
