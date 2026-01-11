@@ -4,6 +4,7 @@ import CreateTaskModal from './CreateTaskModal';
 import { Task as GlobalTask, User, MatchProfile } from '../types';
 import { KanbanCard } from './KanbanCard';
 import { useWolfPackLogic } from '../hooks/useWolfPackLogic';
+import { useSensoryFeedback } from '../hooks/useSensoryFeedback';
 import { Target, Zap, Trophy, Hammer, Ruler, Brain } from 'lucide-react';
 
 // Use GlobalTask but ensure it has string ID for dnd
@@ -38,6 +39,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
     
     // Hook into the Wolf Pack Logic (Antigravity Handshake)
     const { moveWolf } = useWolfPackLogic();
+    
+    // Hook into Sensory Feedback
+    const { triggerFeedback } = useSensoryFeedback();
 
     // Sync with parent tasks
     useEffect(() => {
@@ -84,6 +88,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
             setEditingTask(task);
             setPendingDrag({ draggableId, destinationIndex: destination.index });
             setIsModalOpen(true);
+            triggerFeedback('click'); // Modal open sound
             return; 
         }
 
@@ -131,6 +136,13 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
 
         // Call the handshake hook
         moveWolf(draggableId, newStatus);
+
+        // Sensory Feedback
+        if (newStatus === 'feast') {
+            triggerFeedback('success');
+        } else {
+            triggerFeedback('drop');
+        }
     };
 
     const handleModalSave = (updatedTask: Partial<GlobalTask>) => {
@@ -143,6 +155,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
             moveWolf(draggableId, 'chase');
             
             setPendingDrag(null);
+            triggerFeedback('drop');
         } else if (editingTask) {
             const task = data.tasks[editingTask.id!];
             const newTask = { ...task, ...updatedTask } as Task;
@@ -230,7 +243,10 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                         >
                                                             <KanbanCard 
                                                                 task={task} 
-                                                                onClick={() => setEditingTask(task)} 
+                                                                onClick={() => {
+                                                                    setEditingTask(task);
+                                                                    triggerFeedback('click');
+                                                                }} 
                                                             />
                                                         </div>
                                                     )}

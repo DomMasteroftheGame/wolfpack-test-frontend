@@ -68,12 +68,22 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
 
     const config = getRoleConfig(wolf.role);
 
+    const [showCelebration, setShowCelebration] = useState(false);
+
     const handleSend = async () => {
         if (!newMessage.trim()) return;
         const msgContent = newMessage;
         setNewMessage('');
         // Optimistic update
         setMessages(prev => [...prev, { fromId: currentUser._id || 'me', toId: wolf.id, content: msgContent, timestamp: new Date().toISOString() }]);
+    };
+
+    const handleSchedule = (wolf: MatchProfile) => {
+        setShowCelebration(true);
+        setTimeout(() => {
+            setShowCelebration(false);
+            onSchedule(wolf);
+        }, 2000);
     };
 
     return (
@@ -167,11 +177,16 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
                             </div>
 
                             <button
-                                onClick={() => onSchedule(wolf)}
-                                className="w-full bg-gold hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-4 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2"
+                                onClick={() => handleSchedule(wolf)}
+                                className="w-full bg-gold hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-4 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 relative overflow-hidden"
                             >
                                 <span className="text-xl">☕</span>
                                 <span>Initiate Coffee Protocol</span>
+                                {showCelebration && (
+                                    <div className="absolute inset-0 bg-white/50 animate-pulse flex items-center justify-center">
+                                        <span className="text-2xl animate-bounce">🎉 PACK FORMED 🎉</span>
+                                    </div>
+                                )}
                             </button>
                         </div>
                     )}

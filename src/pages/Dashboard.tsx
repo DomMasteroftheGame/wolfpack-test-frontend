@@ -12,6 +12,8 @@ import Toast from '../components/Toast';
 import { useAuth } from '../contexts/AuthContext';
 import { useProject } from '../contexts/ProjectContext';
 import { GameHUD } from '../components/GameHUD';
+import { OnboardingTour } from '../components/OnboardingTour';
+import { DomBubble } from '../components/DomBubble';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,21 @@ const Dashboard: React.FC = () => {
   const [isMirrorMode, setIsMirrorMode] = useState(true); // Desktop Split View Toggle
   const [selectedWolf, setSelectedWolf] = useState<MatchProfile | null>(null);
   const [toast, setToast] = useState<{ message: string; onUndo?: () => void } | null>(null);
+  const [showTour, setShowTour] = useState(false);
+
+  // Check for first-time user
+  useEffect(() => {
+      const hasSeenTour = localStorage.getItem('wolfpack_tour_seen');
+      if (!hasSeenTour && currentUser) {
+          // Delay slightly to ensure UI is rendered
+          setTimeout(() => setShowTour(true), 1000);
+      }
+  }, [currentUser]);
+
+  const handleTourComplete = () => {
+      setShowTour(false);
+      localStorage.setItem('wolfpack_tour_seen', 'true');
+  };
 
   // Redirect if not logged in
   if (!currentUser) {
@@ -74,7 +91,9 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-void text-white font-mono flex flex-col overflow-hidden">
       
       {/* --- HEADS-UP DISPLAY (HUD) --- */}
-      <GameHUD currentView={view} onViewChange={handleViewChange} />
+      <div id="hud-container">
+        <GameHUD currentView={view} onViewChange={handleViewChange} />
+      </div>
 
       {/* --- MAIN LAYOUT --- */}
       <div className="flex-1 flex overflow-hidden relative pt-16">
@@ -121,7 +140,7 @@ const Dashboard: React.FC = () => {
         </nav>
 
         {/* --- BATTLEFIELD (Content Area) --- */}
-        <main className="flex-1 overflow-hidden relative bg-void flex">
+        <main className="flex-1 overflow-hidden relative bg-void flex" id="kanban-board">
           {/* Cyber Grid Background */}
           <div className="absolute inset-0 bg-cyber-grid opacity-20 pointer-events-none fixed"></div>
           
@@ -200,6 +219,12 @@ const Dashboard: React.FC = () => {
           onUndo={toast.onUndo}
         />
       )}
+
+      {/* --- ONBOARDING TOUR --- */}
+      <OnboardingTour isActive={showTour} onComplete={handleTourComplete} />
+      
+      {/* --- DOM BUBBLE (Snarky Coach) --- */}
+      <DomBubble />
 
     </div>
   );
