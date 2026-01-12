@@ -63,17 +63,48 @@ const MintID = () => {
     e.preventDefault();
     if (!selectedCafe) return;
 
-    // Save to local storage
+    // GENERATE 40 TASKS (Phased for Usability)
+    const tasks = [];
+    const phases = [
+      { name: "Phase 1: Intel & Setup", count: 5, type: "setup" },
+      { name: "Phase 2: MVP Build", count: 10, type: "build" },
+      { name: "Phase 3: Traction", count: 10, type: "growth" },
+      { name: "Phase 4: Scale", count: 15, type: "scale" }
+    ];
+
+    let taskCounter = 1;
+    phases.forEach(phase => {
+      for (let i = 0; i < phase.count; i++) {
+        tasks.push({
+          id: `task-${taskCounter}`,
+          title: `${phase.name} - Step ${i + 1}`,
+          description: `Execute tactical objective #${taskCounter} for ${phase.name}.`,
+          status: 'todo',
+          ivp_value: 10,
+          phase: phase.name, // Grouping key
+          project_id: 'local-project'
+        });
+        taskCounter++;
+      }
+    });
+
+    // Save to local storage (wolfpack_user for ProjectContext)
     const role = localStorage.getItem('wolf_role');
-    const profile = {
+    const userProfile = {
+      _id: 'local-user',
+      email: 'agent@wolfpack.com',
+      name: formData.name,
       ...formData,
-      location: selectedCafe.name, // Enforce cafe name as location
+      location: selectedCafe.name,
       homebase_id: selectedCafe.id || 'mock-id',
       role,
       skills: formData.skills.split(',').map(s => s.trim()),
-      stats: { ivp: 0, efficiency: 0 }
+      stats: { ivp: 0, efficiency: 0 },
+      tasks: tasks // CRITICAL: Save tasks here
     };
-    localStorage.setItem('wolf_profile', JSON.stringify(profile));
+    
+    localStorage.setItem('wolfpack_user', JSON.stringify(userProfile));
+    localStorage.setItem('wolf_profile', JSON.stringify(userProfile)); // Keep legacy sync
     
     // Navigate to Game Board
     setLocation('/game');

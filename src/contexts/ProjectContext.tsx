@@ -106,8 +106,26 @@ export function ProjectProvider({ children }: ProjectProviderProps) {
         const project = await projectsApi.getProject(token, currentProjectId);
         setCurrentProject(project);
 
-        const tasks = await tasksApi.getProjectTasks(token, currentProjectId);
-        setProjectTasks(tasks);
+        let tasks = [];
+        try {
+          tasks = await tasksApi.getProjectTasks(token, currentProjectId);
+        } catch (e) {
+          console.warn("API Task Load Failed, checking local storage...");
+        }
+
+        // FALLBACK: Check Local Storage if API returns empty or fails
+        if (!tasks || tasks.length === 0) {
+           const localUser = localStorage.getItem('wolfpack_user');
+           if (localUser) {
+             const parsed = JSON.parse(localUser);
+             if (parsed.tasks && parsed.tasks.length > 0) {
+               console.log("🐺 ProjectContext: Loaded tasks from Local Storage Fallback");
+               tasks = parsed.tasks;
+             }
+           }
+        }
+        
+        setProjectTasks(tasks || []);
 
         const gameboard = await gameboardApi.getProjectGameboard(token, currentProjectId);
         setProjectGameboard(gameboard);
