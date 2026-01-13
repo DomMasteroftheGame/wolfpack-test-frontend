@@ -36,15 +36,13 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<Partial<Task> | undefined>(undefined);
     const [pendingDrag, setPendingDrag] = useState<{ draggableId: string, destinationIndex: number } | null>(null);
-    const [collapsedPhases, setCollapsedPhases] = useState<{[key: string]: boolean}>({
-        "Phase 2: MVP Build": true,
-        "Phase 3: Traction": true,
-        "Phase 4: Scale": true
-    });
-
-    const togglePhase = (phaseName: string) => {
-        setCollapsedPhases(prev => ({ ...prev, [phaseName]: !prev[phaseName] }));
-    };
+    const [activePhase, setActivePhase] = useState<string>("Phase 1: Intel & Setup");
+    const phases = [
+        "Phase 1: Intel & Setup",
+        "Phase 2: MVP Build",
+        "Phase 3: Traction",
+        "Phase 4: Scale"
+    ];
     
     // Hook into the Wolf Pack Logic (Antigravity Handshake)
     const { moveWolf } = useWolfPackLogic();
@@ -186,17 +184,42 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
     return (
         <div className="h-full flex flex-col">
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-void/90 backdrop-blur shrink-0">
-                <h2 className="text-xl font-heading text-white tracking-widest flex items-center gap-2">
-                    <span>TACTICAL BOARD</span>
-                    <span className="text-gold text-[10px] bg-gold/10 px-1 rounded border border-gold/20 align-top">LIVE</span>
-                </h2>
-                <div className="flex gap-4 text-[10px] font-mono text-gray-500 uppercase">
-                    <span className="flex items-center gap-1"><Hammer size={12} className="text-yellow-500" /> BUILD</span>
-                    <span className="flex items-center gap-1"><Ruler size={12} className="text-cyan-500" /> MEASURE</span>
-                    <span className="flex items-center gap-1"><Brain size={12} className="text-pink-500" /> LEARN</span>
+                <div className="flex flex-col border-b border-gray-800 bg-void/90 backdrop-blur shrink-0">
+                    <div className="flex justify-between items-center px-6 py-4">
+                        <h2 className="text-xl font-heading text-white tracking-widest flex items-center gap-2">
+                            <span>TACTICAL BOARD</span>
+                            <span className="text-gold text-[10px] bg-gold/10 px-1 rounded border border-gold/20 align-top">LIVE</span>
+                        </h2>
+                        <div className="flex gap-4 text-[10px] font-mono text-gray-500 uppercase">
+                            <span className="flex items-center gap-1"><Hammer size={12} className="text-yellow-500" /> BUILD</span>
+                            <span className="flex items-center gap-1"><Ruler size={12} className="text-cyan-500" /> MEASURE</span>
+                            <span className="flex items-center gap-1"><Brain size={12} className="text-pink-500" /> LEARN</span>
+                        </div>
+                    </div>
+                    
+                    {/* PHASE TABS */}
+                    <div className="flex px-6 gap-1 overflow-x-auto custom-scrollbar">
+                        {phases.map((phase, idx) => {
+                            const isActive = activePhase === phase;
+                            // Simple lock logic: Unlock next phase if previous is active (mock for now)
+                            const isLocked = idx > phases.indexOf(activePhase) + 1; 
+                            
+                            return (
+                                <button
+                                    key={phase}
+                                    onClick={() => setActivePhase(phase)}
+                                    className={`px-4 py-2 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors whitespace-nowrap ${
+                                        isActive 
+                                            ? 'border-gold text-white' 
+                                            : 'border-transparent text-gray-600 hover:text-gray-400'
+                                    }`}
+                                >
+                                    {phase}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
 
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="flex-1 flex overflow-x-auto overflow-y-hidden">
@@ -240,72 +263,27 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                 snapshot.isDraggingOver ? 'bg-white/5' : ''
                                             }`}
                                         >
-                                            {tasks.map((task, index) => {
-                                                // PHASE GROUPING LOGIC (Only for 'hunt' column)
-                                                if (isHunt && task.phase) {
-                                                    const isFirstInPhase = index === 0 || tasks[index - 1].phase !== task.phase;
-                                                    const isCollapsed = collapsedPhases[task.phase];
-
-                                                    return (
-                                                        <React.Fragment key={task.id}>
-                                                            {isFirstInPhase && (
-                                                                <div 
-                                                                    onClick={() => togglePhase(task.phase!)}
-                                                                    className="flex items-center justify-between p-2 bg-gray-900/50 border border-gray-800 rounded cursor-pointer hover:bg-gray-800 transition-colors mb-2"
-                                                                >
-                                                                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{task.phase}</span>
-                                                                    <span className="text-gray-500 text-xs">{isCollapsed ? '+' : '-'}</span>
-                                                                </div>
-                                                            )}
-                                                            
-                                                            {!isCollapsed && (
-                                                                <Draggable draggableId={task.id} index={index}>
-                                                                    {(provided, snapshot) => (
-                                                                        <div
-                                                                            ref={provided.innerRef}
-                                                                            {...provided.draggableProps}
-                                                                            {...provided.dragHandleProps}
-                                                                            id={`task-${task.id}`}
-                                                                            style={{ ...provided.draggableProps.style }}
-                                                                        >
-                                                                            <KanbanCard 
-                                                                                task={task} 
-                                                                                onClick={() => {
-                                                                                    setEditingTask(task);
-                                                                                    triggerFeedback('click');
-                                                                                }} 
-                                                                            />
-                                                                        </div>
-                                                                    )}
-                                                                </Draggable>
-                                                            )}
-                                                        </React.Fragment>
-                                                    );
-                                                }
-
-                                                // Standard Rendering for other columns
-                                                return (
-                                                    <Draggable key={task.id} draggableId={task.id} index={index}>
-                                                        {(provided, snapshot) => (
-                                                            <div
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                id={`task-${task.id}`}
-                                                                style={{ ...provided.draggableProps.style }}
-                                                            >
-                                                                <KanbanCard 
-                                                                    task={task} 
-                                                                    onClick={() => {
-                                                                        setEditingTask(task);
-                                                                        triggerFeedback('click');
-                                                                    }} 
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                );
-                                            })}
+                                            {tasks.filter(t => !isHunt || t.phase === activePhase).map((task, index) => (
+                                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                                    {(provided, snapshot) => (
+                                                        <div
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            id={`task-${task.id}`}
+                                                            style={{ ...provided.draggableProps.style }}
+                                                        >
+                                                            <KanbanCard 
+                                                                task={task} 
+                                                                onClick={() => {
+                                                                    setEditingTask(task);
+                                                                    triggerFeedback('click');
+                                                                }} 
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
                                             {provided.placeholder}
                                         </div>
                                     )}

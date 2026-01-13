@@ -176,18 +176,31 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => handleSchedule(wolf)}
-                                className="w-full bg-gold hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-4 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 relative overflow-hidden"
-                            >
-                                <span className="text-xl">☕</span>
-                                <span>Initiate Coffee Protocol</span>
-                                {showCelebration && (
-                                    <div className="absolute inset-0 bg-white/50 animate-pulse flex items-center justify-center">
-                                        <span className="text-2xl animate-bounce">🎉 PACK FORMED 🎉</span>
-                                    </div>
-                                )}
-                            </button>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => {
+                                        // Signal Logic (Mock)
+                                        alert(`Signal sent to ${wolf.name}. They will see you on their radar.`);
+                                    }}
+                                    className="flex-1 border border-gold text-gold font-bold uppercase tracking-widest py-4 rounded hover:bg-gold/10 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <span className="text-xl">📡</span>
+                                    <span>Signal</span>
+                                </button>
+                                
+                                <button
+                                    onClick={() => handleSchedule(wolf)}
+                                    className="flex-[2] bg-gold hover:bg-yellow-500 text-black font-black uppercase tracking-widest py-4 rounded shadow-[0_0_15px_rgba(202,138,4,0.3)] transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 relative overflow-hidden"
+                                >
+                                    <span className="text-xl">☕</span>
+                                    <span>Coffee Protocol</span>
+                                    {showCelebration && (
+                                        <div className="absolute inset-0 bg-white/50 animate-pulse flex items-center justify-center">
+                                            <span className="text-2xl animate-bounce">🎉 PACK FORMED 🎉</span>
+                                        </div>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     )}
 

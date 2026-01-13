@@ -124,6 +124,42 @@ export function ProjectProvider({ children }: ProjectProviderProps) {
              }
            }
         }
+
+        // EMERGENCY RESCUE: If still 0 tasks, generate them now
+        if (!tasks || tasks.length === 0) {
+            console.warn("🐺 ProjectContext: No tasks found anywhere. Generating Emergency Protocol Tasks.");
+            const phases = [
+              { name: "Phase 1: Intel & Setup", count: 5, type: "setup" },
+              { name: "Phase 2: MVP Build", count: 10, type: "build" },
+              { name: "Phase 3: Traction", count: 10, type: "growth" },
+              { name: "Phase 4: Scale", count: 15, type: "scale" }
+            ];
+            let taskCounter = 1;
+            const emergencyTasks = [];
+            phases.forEach(phase => {
+              for (let i = 0; i < phase.count; i++) {
+                emergencyTasks.push({
+                  id: `rescue-task-${taskCounter}`,
+                  title: `${phase.name} - Step ${i + 1}`,
+                  description: `Execute tactical objective #${taskCounter} for ${phase.name}.`,
+                  status: 'todo',
+                  ivp_value: 10,
+                  phase: phase.name,
+                  project_id: 'local-project'
+                });
+                taskCounter++;
+              }
+            });
+            tasks = emergencyTasks;
+            
+            // Persist rescue
+            const localUser = localStorage.getItem('wolfpack_user');
+            if (localUser) {
+                const parsed = JSON.parse(localUser);
+                parsed.tasks = tasks;
+                localStorage.setItem('wolfpack_user', JSON.stringify(parsed));
+            }
+        }
         
         setProjectTasks(tasks || []);
 
