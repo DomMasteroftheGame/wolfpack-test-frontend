@@ -25,21 +25,6 @@ const Dashboard: React.FC = () => {
   const [isMirrorMode, setIsMirrorMode] = useState(true); // Desktop Split View Toggle
   const [selectedWolf, setSelectedWolf] = useState<MatchProfile | null>(null);
   const [toast, setToast] = useState<{ message: string; onUndo?: () => void } | null>(null);
-  const [showTour, setShowTour] = useState(false);
-
-  // Check for first-time user
-  useEffect(() => {
-      const hasSeenTour = localStorage.getItem('wolfpack_tour_seen');
-      if (!hasSeenTour && currentUser) {
-          // Delay slightly to ensure UI is rendered
-          setTimeout(() => setShowTour(true), 1000);
-      }
-  }, [currentUser]);
-
-  const handleTourComplete = () => {
-      setShowTour(false);
-      localStorage.setItem('wolfpack_tour_seen', 'true');
-  };
 
   // Redirect if not logged in
   if (!currentUser) {
@@ -221,7 +206,7 @@ const Dashboard: React.FC = () => {
       )}
 
       {/* --- ONBOARDING TOUR --- */}
-      <OnboardingTour isActive={showTour} onComplete={handleTourComplete} />
+      <OnboardingTour />
       
       {/* --- DOM BUBBLE (Snarky Coach) --- */}
       <DomBubble />

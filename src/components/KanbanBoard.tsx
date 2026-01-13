@@ -198,7 +198,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                     </div>
                     
                     {/* PHASE TABS */}
-                    <div className="flex px-6 gap-1 overflow-x-auto custom-scrollbar">
+                    <div id="phase-tabs-container" className="flex px-6 gap-1 overflow-x-auto custom-scrollbar">
                         {phases.map((phase, idx) => {
                             const isActive = activePhase === phase;
                             // Simple lock logic: Unlock next phase if previous is active (mock for now)
@@ -226,7 +226,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                 </div>
 
             <DragDropContext onDragEnd={onDragEnd}>
-                <div className="flex-1 flex overflow-x-auto overflow-y-hidden">
+                <div id="kanban-board-container" className="flex-1 flex overflow-x-auto overflow-y-hidden">
                     {data.columnOrder.map((columnId, index) => {
                         const column = data.columns[columnId];
                         const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);

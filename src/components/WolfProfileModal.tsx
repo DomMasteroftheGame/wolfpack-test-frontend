@@ -178,11 +178,12 @@ const WolfProfileModal: React.FC<WolfProfileModalProps> = ({ wolf, currentUser, 
 
                             <div className="flex gap-2">
                                 <button
+                                    id="signal-button"
                                     onClick={() => {
                                         // Signal Logic (Mock)
                                         alert(`Signal sent to ${wolf.name}. They will see you on their radar.`);
                                     }}
-                                    className="flex-1 border border-gold text-gold font-bold uppercase tracking-widest py-4 rounded hover:bg-gold/10 transition-colors flex items-center justify-center gap-2"
+                                    className="flex-1 border border-gold text-gold font-bold uppercase tracking-widest py-4 rounded hover:bg-gold/10 transition-colors flex items-center justify-center gap-2 animate-pulse"
                                 >
                                     <span className="text-xl">📡</span>
                                     <span>Signal</span>

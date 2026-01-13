@@ -77,7 +77,7 @@ export const DomBubble: React.FC = () => {
     }
 
     return (
-        <div className="fixed bottom-20 right-4 z-50 max-w-xs animate-in slide-in-from-bottom-5 duration-300">
+        <div id="dom-bubble" className="fixed bottom-20 right-4 z-50 max-w-xs animate-in slide-in-from-bottom-5 duration-300">
             <div className={`relative bg-black border-2 ${mood === 'annoyed' ? 'border-red-500' : 'border-gold'} p-4 rounded-xl shadow-2xl`}>
                 
                 {/* Tail */}
