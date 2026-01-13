@@ -19,11 +19,11 @@
 3.  **Gamified Feedback:** Every drag-and-drop must have a "Juicy" feel (sound, haptics, visual flash).
 
 ### Active Agents & Tasks
-*   **Agent Manus (Current):** Overhauling `KanbanBoard.tsx` and `MintID.tsx`.
+*   **Agent Manus (Current):** FORCING UI UPDATES & POLISHING VISUALS.
 *   **Next Steps:**
-    *   **Fix Visibility:** Add "Rescue Mode" to reset corrupted task data.
-    *   **Phase Tabs:** Replace scrolling lists with Phase Tabs (Phase 1 | Locked | Locked).
-    *   **Networking:** Add "Signal" button for low-pressure connection.
+    *   **High Contrast UI:** Make Phase Tabs and Signal Button visually aggressive (Gold/Black) to ensure visibility.
+    *   **Force Refresh:** Restart dev server to clear stale cache.
+    *   **Verification:** Confirm code application in `KanbanBoard.tsx`.
 
 ### 📂 Key Files
 *   `src/pages/MintID.tsx`: Entry point. Generates initial user state.

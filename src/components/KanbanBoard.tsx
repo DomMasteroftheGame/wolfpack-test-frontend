@@ -207,14 +207,18 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                             return (
                                 <button
                                     key={phase}
-                                    onClick={() => setActivePhase(phase)}
-                                    className={`px-4 py-2 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors whitespace-nowrap ${
+                                    onClick={() => !isLocked && setActivePhase(phase)}
+                                    disabled={isLocked}
+                                    className={`px-6 py-3 text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap flex items-center gap-2 ${
                                         isActive 
-                                            ? 'border-gold text-white' 
-                                            : 'border-transparent text-gray-600 hover:text-gray-400'
+                                            ? 'bg-gold text-black shadow-[0_0_15px_rgba(255,215,0,0.4)] transform scale-105' 
+                                            : isLocked
+                                                ? 'text-gray-700 cursor-not-allowed'
+                                                : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                                 >
                                     {phase}
+                                    {isLocked && <span className="text-[10px]">🔒</span>}
                                 </button>
                             );
                         })}
