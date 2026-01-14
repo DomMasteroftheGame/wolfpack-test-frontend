@@ -31,6 +31,20 @@
     *   **Real-Time Sync:** Implement WebSockets.
     *   **Sound Design:** Add mechanical click sounds.
 
+### 🚀 Deployment Strategy (Shopify Integration)
+**Current Host:** Shopify (Liquid Theme)
+**App Type:** React SPA (Vite)
+**Conflict:** Shopify Themes cannot natively host a React SPA without modification.
+
+**Recommended Strategy (Option A - Subdomain):**
+1.  Deploy this React app to Vercel/Netlify (e.g., `app.buildyourwolfpack.com`).
+2.  Link to it from the Shopify main menu.
+
+**Alternative Strategy (Option B - Embedded):**
+1.  Build the app: `pnpm build`.
+2.  Upload `dist/assets` to Shopify `assets/` folder.
+3.  Create a `page.wolfpack.liquid` template that loads the React bundle.
+
 ### 📂 Key Files
 *   `src/pages/MintID.tsx`: Entry point. Generates initial user state.
 *   `src/contexts/ProjectContext.tsx`: Manages task state.
