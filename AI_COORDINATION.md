@@ -36,14 +36,15 @@
 **App Type:** React SPA (Vite)
 **Conflict:** Shopify Themes cannot natively host a React SPA without modification.
 
-**Recommended Strategy (Option A - Subdomain):**
-1.  Deploy this React app to Vercel/Netlify (e.g., `app.buildyourwolfpack.com`).
-2.  Link to it from the Shopify main menu.
+**Selected Strategy: Embedded in Shopify**
+1.  **Build Config:** `vite.config.ts` MUST use `base: './'` to ensure assets load correctly within Shopify's directory structure.
+2.  **Deployment:** Build artifacts (`dist/assets`) are manually uploaded to Shopify `assets/` folder.
+3.  **Integration:** A `page.wolfpack.liquid` template loads the React bundle.
 
-**Alternative Strategy (Option B - Embedded):**
-1.  Build the app: `pnpm build`.
-2.  Upload `dist/assets` to Shopify `assets/` folder.
-3.  Create a `page.wolfpack.liquid` template that loads the React bundle.
+**Backend Stack:**
+- **Auth/Realtime:** Firebase (Client SDK for frontend).
+- **Database:** MongoDB (via Node.js backend).
+- **Security:** NEVER commit `firebase-adminsdk` keys to this repo. Use environment variables only.
 
 ### 📂 Key Files
 *   `src/pages/MintID.tsx`: Entry point. Generates initial user state.
