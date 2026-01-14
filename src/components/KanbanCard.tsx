@@ -1,11 +1,13 @@
 import React from 'react';
 import { Task } from '../types';
 import { motion } from 'framer-motion';
-import { Hammer, Ruler, Brain, Flame, Clock } from 'lucide-react';
+import { Hammer, Ruler, Brain, Flame, Clock, UserPlus, Briefcase } from 'lucide-react';
 
 interface KanbanCardProps {
     task: Task;
     onClick: () => void;
+    onAssign?: (e: React.MouseEvent) => void;
+    onOutsource?: (e: React.MouseEvent) => void;
 }
 
 // SECTOR COLORS (Aligned with Master Architect)
@@ -15,7 +17,7 @@ const SECTOR_COLORS = {
     learn: { border: 'border-pink-500', text: 'text-pink-500', bg: 'bg-pink-500/10', icon: <Brain size={14} /> },
 };
 
-export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
+export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign, onOutsource }) => {
     // Determine phase based on step number if not explicit, or default to 'build'
     let phase = task.phase || 'build';
     const stepNumber = task.step_number || 1;
@@ -65,7 +67,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
             <div className="flex items-center justify-between border-t border-gray-800 pt-2">
                 <div className="flex items-center gap-1 text-[10px] text-gray-500">
                     <Clock size={12} />
-                    <span>{task.deadline ? new Date(task.deadline).toLocaleDateString() : 'No Intel'}</span>
+                    <span>{task.deadline ? new Date(task.deadline).toLocaleDateString() : 'TBD'}</span>
                 </div>
                 
                 {/* Visual Heat Meter */}
@@ -83,6 +85,24 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* Quick Actions Overlay (Visible on Hover or if Mobile) */}
+            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                    onClick={(e) => { e.stopPropagation(); onAssign && onAssign(e); }}
+                    className="p-1.5 rounded bg-gray-800 hover:bg-gold hover:text-black text-gray-400 transition-colors shadow-lg"
+                    title="Assign to Wolf"
+                >
+                    <UserPlus size={14} />
+                </button>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); onOutsource && onOutsource(e); }}
+                    className="p-1.5 rounded bg-gray-800 hover:bg-cyan-500 hover:text-black text-gray-400 transition-colors shadow-lg"
+                    title="Outsource Task"
+                >
+                    <Briefcase size={14} />
+                </button>
             </div>
         </motion.div>
     );

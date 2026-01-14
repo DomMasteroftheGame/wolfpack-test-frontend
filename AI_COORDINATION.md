@@ -13,8 +13,9 @@
 ## 🛠 CURRENT MISSION: UI/UX OVERHAUL & KANBAN RESCUE
 **Objective:** Implement "Progressive Disclosure" for the 40 tasks and "Structured Networking" for introverts.
 
-### 🎨 UI/UX Principles (Research-Backed)
-1.  **Progressive Disclosure:** Do NOT show 40 tasks at once. Unlock Phase 2 only after Phase 1 is complete.
+### 🎨 UI/UX Principles (Research-Backe17	1.  **Holistic Visibility:** Show ALL 40 tasks by default. Users need to see the full battlefield to strategize and delegate.
+18	    *   **"ALL OPS" Tab:** Default view showing every task.
+19	    *   **Phase Filters:** Optional filters for focus, not locks.
 2.  **Structured Networking:** Use "Protocols" (e.g., Coffee Protocol) instead of open chat. Reduce social friction.
 3.  **Gamified Feedback:** Every drag-and-drop must have a "Juicy" feel (sound, haptics, visual flash).
 

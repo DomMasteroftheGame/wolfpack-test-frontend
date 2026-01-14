@@ -36,8 +36,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<Partial<Task> | undefined>(undefined);
     const [pendingDrag, setPendingDrag] = useState<{ draggableId: string, destinationIndex: number } | null>(null);
-    const [activePhase, setActivePhase] = useState<string>("Phase 1: Intel & Setup");
+    const [activePhase, setActivePhase] = useState<string>("ALL OPS");
     const phases = [
+        "ALL OPS",
         "Phase 1: Intel & Setup",
         "Phase 2: MVP Build",
         "Phase 3: Traction",
@@ -58,17 +59,19 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
         const feastIds: string[] = []; // Done
 
         initialTasks.forEach(t => {
-            // Filter by Active Phase
-            // If task has no phase, default to Phase 1
-            const taskPhase = t.phase || "Phase 1: Intel & Setup";
-            
-            // Normalize strings for comparison (handle "Phase 1" vs "Phase 1: Intel & Setup")
-            const normalizedTaskPhase = taskPhase.includes("Phase 1") ? "Phase 1: Intel & Setup" :
-                                      taskPhase.includes("Phase 2") ? "Phase 2: MVP Build" :
-                                      taskPhase.includes("Phase 3") ? "Phase 3: Traction" :
-                                      taskPhase.includes("Phase 4") ? "Phase 4: Scale" : taskPhase;
+            // Filter by Active Phase (unless ALL OPS is selected)
+            if (activePhase !== "ALL OPS") {
+                // If task has no phase, default to Phase 1
+                const taskPhase = t.phase || "Phase 1: Intel & Setup";
+                
+                // Normalize strings for comparison (handle "Phase 1" vs "Phase 1: Intel & Setup")
+                const normalizedTaskPhase = taskPhase.includes("Phase 1") ? "Phase 1: Intel & Setup" :
+                                          taskPhase.includes("Phase 2") ? "Phase 2: MVP Build" :
+                                          taskPhase.includes("Phase 3") ? "Phase 3: Traction" :
+                                          taskPhase.includes("Phase 4") ? "Phase 4: Scale" : taskPhase;
 
-            if (normalizedTaskPhase !== activePhase) return;
+                if (normalizedTaskPhase !== activePhase) return;
+            }
 
             const id = t.id.toString();
             tasksMap[id] = { ...t, id } as Task;
@@ -213,24 +216,20 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                     <div id="phase-tabs-container" className="flex px-6 gap-1 overflow-x-auto custom-scrollbar">
                         {phases.map((phase, idx) => {
                             const isActive = activePhase === phase;
-                            // Simple lock logic: Unlock next phase if previous is active (mock for now)
-                            const isLocked = idx > phases.indexOf(activePhase) + 1; 
+                            // No locks - Holistic Visibility
+                            const isLocked = false; 
                             
                             return (
                                 <button
                                     key={phase}
-                                    onClick={() => !isLocked && setActivePhase(phase)}
-                                    disabled={isLocked}
+                                    onClick={() => setActivePhase(phase)}
                                     className={`px-6 py-3 text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap flex items-center gap-2 ${
                                         isActive 
                                             ? 'bg-gold text-black shadow-[0_0_15px_rgba(255,215,0,0.4)] transform scale-105' 
-                                            : isLocked
-                                                ? 'text-gray-700 cursor-not-allowed'
-                                                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                                 >
                                     {phase}
-                                    {isLocked && <span className="text-[10px]">🔒</span>}
                                 </button>
                             );
                         })}
@@ -289,14 +288,25 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                             id={`task-${task.id}`}
                                                             style={{ ...provided.draggableProps.style }}
                                                         >
-                                                            <KanbanCard 
-                                                                task={task} 
-                                                                onClick={() => {
-                                                                    setEditingTask(task);
-                                                                    triggerFeedback('click');
-                                                                }} 
-                                                            />
-                                                        </div>
+                                                          <KanbanCard
+                                                    task={task}
+                                                    onClick={() => {
+                                                        setEditingTask(task);
+                                                        setIsModalOpen(true);
+                                                        triggerFeedback('click');
+                                                    }}
+                                                    onAssign={(e) => {
+                                                        // Trigger Assign Modal (Mock for now, or open Edit Modal with Assign tab)
+                                                        setEditingTask(task);
+                                                        setIsModalOpen(true);
+                                                        triggerFeedback('click');
+                                                    }}
+                                                    onOutsource={(e) => {
+                                                        // Trigger Outsource Logic
+                                                        if (onOutsource) onOutsource(task);
+                                                        triggerFeedback('click');
+                                                    }}
+                                                />                                                        </div>
                                                     )}
                                                 </Draggable>
                                             ))}
