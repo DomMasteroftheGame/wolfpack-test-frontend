@@ -14,6 +14,7 @@ import { useProject } from '../contexts/ProjectContext';
 import { GameHUD } from '../components/GameHUD';
 import { OnboardingTour } from '../components/OnboardingTour';
 import { DomBubble } from '../components/DomBubble';
+import { DraggableAvatar } from '../components/DraggableAvatar';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -110,6 +111,20 @@ const Dashboard: React.FC = () => {
               icon="☕" 
               label="Coffee Dates" 
             />
+          </div>
+
+          {/* My Pack (Draggable) */}
+          <div className="p-4 border-t border-gray-800">
+            <div className="text-[10px] text-gray-500 uppercase font-bold mb-2 tracking-widest flex items-center gap-2">
+                <span>MY PACK</span>
+                <span className="text-[8px] bg-gold/10 text-gold px-1 rounded">DRAG TO ASSIGN</span>
+            </div>
+            <div className="space-y-1">
+                {/* Mock Pack Members for Demo */}
+                <DraggableAvatar wolf={{ id: 'wolf-1', name: 'Sarah Connor', role: 'Hacker', matchPercentage: 98, traits: [], skills: [] }} />
+                <DraggableAvatar wolf={{ id: 'wolf-2', name: 'John Wick', role: 'Enforcer', matchPercentage: 95, traits: [], skills: [] }} />
+                <DraggableAvatar wolf={{ id: 'wolf-3', name: 'Neo', role: 'Architect', matchPercentage: 92, traits: [], skills: [] }} />
+            </div>
           </div>
 
           {/* Alpha Pitch Widget */}

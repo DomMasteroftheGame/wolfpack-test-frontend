@@ -8,6 +8,7 @@ interface KanbanCardProps {
     onClick: () => void;
     onAssign?: (e: React.MouseEvent) => void;
     onOutsource?: (e: React.MouseEvent) => void;
+    onDropAvatar?: (wolfId: string, wolfName: string) => void;
 }
 
 // SECTOR COLORS (Aligned with Master Architect)
@@ -17,7 +18,32 @@ const SECTOR_COLORS = {
     learn: { border: 'border-pink-500', text: 'text-pink-500', bg: 'bg-pink-500/10', icon: <Brain size={14} /> },
 };
 
-export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign, onOutsource }) => {
+export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign, onOutsource, onDropAvatar }) => {
+    const [isDragOver, setIsDragOver] = React.useState(false);
+
+    const handleDragOver = (e: React.DragEvent) => {
+        if (e.dataTransfer.types.includes('wolfid')) { // Lowercase check for safety
+             e.preventDefault();
+             setIsDragOver(true);
+        } else if (e.dataTransfer.types.includes('wolfId')) { // Case sensitive check
+             e.preventDefault();
+             setIsDragOver(true);
+        }
+    };
+
+    const handleDragLeave = () => {
+        setIsDragOver(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const wolfId = e.dataTransfer.getData('wolfId');
+        const wolfName = e.dataTransfer.getData('wolfName');
+        if (wolfId && onDropAvatar) {
+            onDropAvatar(wolfId, wolfName);
+        }
+    };
     // Determine phase based on step number if not explicit, or default to 'build'
     let phase = task.phase || 'build';
     const stepNumber = task.step_number || 1;
@@ -36,11 +62,15 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign,
         <motion.div
             layoutId={task.id}
             onClick={onClick}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
             className={`
                 relative p-4 rounded-lg border-l-4 bg-gray-900/80 backdrop-blur-sm
                 hover:bg-gray-800 transition-all cursor-pointer group mb-3
                 ${style.border}
                 ${isHighHeat ? 'shadow-[0_0_15px_rgba(239,68,68,0.2)] animate-pulse-slow' : ''}
+                ${isDragOver ? 'ring-2 ring-gold bg-gold/10' : ''}
             `}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

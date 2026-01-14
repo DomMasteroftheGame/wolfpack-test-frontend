@@ -306,6 +306,14 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                         if (onOutsource) onOutsource(task);
                                                         triggerFeedback('click');
                                                     }}
+                                                    onDropAvatar={(wolfId, wolfName) => {
+                                                        // Assign Wolf to Task
+                                                        const updatedTask = { ...task, assignedTo: wolfId, assigneeName: wolfName };
+                                                        onUpdateTask(updatedTask);
+                                                        triggerFeedback('success');
+                                                        // Optional: Show toast
+                                                        alert(`Assigned ${wolfName} to ${task.title}`);
+                                                    }}
                                                 />                                                        </div>
                                                     )}
                                                 </Draggable>
