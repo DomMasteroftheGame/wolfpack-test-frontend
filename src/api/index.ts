@@ -165,8 +165,15 @@ export const matchmakerApi = {
   updateLocation: (token: string, location: { lat: number; long: number }) =>
     apiRequest<{ message: string }>('/api/matchmaker/update-location', 'POST', location, token),
 
-  getNearbyWolves: (token: string, lat: number, long: number, radius: number = 50) =>
-    apiRequest<any[]>(`/api/matchmaker/radar?userId=me&lat=${lat}&long=${long}&radius=${radius}`, 'GET', undefined, token),
+  getNearbyWolves: async (token: string, lat: number, long: number, radius: number = 50) => {
+    // MOCK RESPONSE for Static Demo
+    console.log("🐺 Matchmaker: Returning Mock Data (Static Mode)");
+    return [
+        { id: 'wolf-1', name: 'Sarah Connor', role: 'Hacker', stats: { ivp: 120, connect: 80 }, distance: 1.2 },
+        { id: 'wolf-2', name: 'John Wick', role: 'Hustler', stats: { ivp: 200, connect: 40 }, distance: 3.5 },
+        { id: 'wolf-3', name: 'Neo', role: 'Hipster', stats: { ivp: 90, connect: 95 }, distance: 0.5 }
+    ];
+  },
 
   findVenue: (token: string, coordinates: number[][]) =>
     apiRequest<any>('/api/matchmaker/venue', 'POST', { coordinates }, token),
