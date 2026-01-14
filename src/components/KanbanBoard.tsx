@@ -58,6 +58,18 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
         const feastIds: string[] = []; // Done
 
         initialTasks.forEach(t => {
+            // Filter by Active Phase
+            // If task has no phase, default to Phase 1
+            const taskPhase = t.phase || "Phase 1: Intel & Setup";
+            
+            // Normalize strings for comparison (handle "Phase 1" vs "Phase 1: Intel & Setup")
+            const normalizedTaskPhase = taskPhase.includes("Phase 1") ? "Phase 1: Intel & Setup" :
+                                      taskPhase.includes("Phase 2") ? "Phase 2: MVP Build" :
+                                      taskPhase.includes("Phase 3") ? "Phase 3: Traction" :
+                                      taskPhase.includes("Phase 4") ? "Phase 4: Scale" : taskPhase;
+
+            if (normalizedTaskPhase !== activePhase) return;
+
             const id = t.id.toString();
             tasksMap[id] = { ...t, id } as Task;
 
