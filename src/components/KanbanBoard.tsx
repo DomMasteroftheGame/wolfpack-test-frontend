@@ -307,17 +307,28 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                         triggerFeedback('click');
                                                     }}
                                                     onDropAvatar={(wolfId, wolfName, wolfAvatar) => {
-                                                        // Assign Wolf to Task
+                                                        // Assign Wolf to Task (Append to list)
+                                                        const currentAssignees = task.assignees || [];
+                                                        // Check for duplicates
+                                                        if (currentAssignees.some(a => a.id === wolfId)) {
+                                                            alert(`${wolfName} is already assigned to this task.`);
+                                                            return;
+                                                        }
+                                                        
+                                                        const newAssignee = { id: wolfId, name: wolfName, avatar: wolfAvatar };
+                                                        const updatedAssignees = [...currentAssignees, newAssignee];
+
                                                         const updatedTask = { 
                                                             ...task, 
-                                                            assignedTo: wolfId, 
+                                                            assignedTo: wolfId, // Keep last assigned as primary for legacy
                                                             assigneeName: wolfName,
-                                                            assigneeAvatar: wolfAvatar 
+                                                            assigneeAvatar: wolfAvatar,
+                                                            assignees: updatedAssignees
                                                         };
                                                         onUpdateTask(updatedTask);
                                                         triggerFeedback('success');
                                                         // Optional: Show toast
-                                                        alert(`Assigned ${wolfName} to ${task.title}`);
+                                                        alert(`Added ${wolfName} to ${task.title}`);
                                                     }}
                                                 />                                                        </div>
                                                     )}

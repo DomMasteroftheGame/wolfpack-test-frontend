@@ -20,8 +20,11 @@ export interface Task {
   deliverables?: string[];
   ivp?: number;
   status: TaskStatus;
-  assignedTo?: 'labor' | 'finance' | 'sales' | null;
+  assignedTo?: 'labor' | 'finance' | 'sales' | string | null; // Updated to allow string ID
   assigneeIds?: string[]; // Specific user IDs
+  assignees?: { id: string; name: string; avatar?: string }[]; // Detailed assignee info for rendering
+  assigneeName?: string; // Legacy support
+  assigneeAvatar?: string; // Legacy support
   method?: ExecutionMethod;
   pace?: Pace;
   

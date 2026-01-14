@@ -118,20 +118,41 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign,
                 </div>
             </div>
 
-            {/* Assigned Avatar Stack */}
-            {task.assignedTo && (
-                <div className="absolute bottom-2 right-2 z-10">
-                    <div className="w-6 h-6 rounded-full border border-gold bg-gray-800 overflow-hidden shadow-lg" title={`Assigned to: ${task.assigneeName || 'Wolf'}`}>
-                        {task.assigneeAvatar ? (
-                            <img src={task.assigneeAvatar} alt="Assignee" className="w-full h-full object-cover" />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-gold">
-                                {(task.assigneeName || 'W').substring(0, 2).toUpperCase()}
-                            </div>
-                        )}
-                    </div>
+            {/* Assigned Avatar Stack (Multi-User) */}
+            {(task.assignees && task.assignees.length > 0) || task.assignedTo ? (
+                <div className="absolute bottom-2 right-2 z-10 flex -space-x-2 hover:space-x-1 transition-all">
+                    {/* Render Legacy Single Assignee if no array */}
+                    {(!task.assignees || task.assignees.length === 0) && task.assignedTo && (
+                        <div className="w-6 h-6 rounded-full border border-gold bg-gray-800 overflow-hidden shadow-lg relative z-10" title={`Assigned to: ${task.assigneeName || 'Wolf'}`}>
+                            {task.assigneeAvatar ? (
+                                <img src={task.assigneeAvatar} alt="Assignee" className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-gold">
+                                    {(task.assigneeName || 'W').substring(0, 2).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Render Multi-Assignee Stack */}
+                    {task.assignees?.map((assignee, index) => (
+                        <div 
+                            key={assignee.id} 
+                            className="w-6 h-6 rounded-full border border-gold bg-gray-800 overflow-hidden shadow-lg relative transition-transform hover:scale-110 hover:z-20" 
+                            style={{ zIndex: 10 + index }}
+                            title={`Assigned to: ${assignee.name}`}
+                        >
+                            {assignee.avatar ? (
+                                <img src={assignee.avatar} alt={assignee.name} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-gold">
+                                    {assignee.name.substring(0, 2).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
-            )}
+            ) : null}
 
             {/* Quick Actions Overlay (Visible on Hover or if Mobile) */}
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
