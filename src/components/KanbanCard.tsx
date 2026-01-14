@@ -8,7 +8,7 @@ interface KanbanCardProps {
     onClick: () => void;
     onAssign?: (e: React.MouseEvent) => void;
     onOutsource?: (e: React.MouseEvent) => void;
-    onDropAvatar?: (wolfId: string, wolfName: string) => void;
+    onDropAvatar?: (wolfId: string, wolfName: string, wolfAvatar?: string) => void;
 }
 
 // SECTOR COLORS (Aligned with Master Architect)
@@ -40,8 +40,9 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign,
         setIsDragOver(false);
         const wolfId = e.dataTransfer.getData('wolfId');
         const wolfName = e.dataTransfer.getData('wolfName');
+        const wolfAvatar = e.dataTransfer.getData('wolfAvatar');
         if (wolfId && onDropAvatar) {
-            onDropAvatar(wolfId, wolfName);
+            onDropAvatar(wolfId, wolfName, wolfAvatar);
         }
     };
     // Determine phase based on step number if not explicit, or default to 'build'
@@ -116,6 +117,21 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign,
                     </div>
                 </div>
             </div>
+
+            {/* Assigned Avatar Stack */}
+            {task.assignedTo && (
+                <div className="absolute bottom-2 right-2 z-10">
+                    <div className="w-6 h-6 rounded-full border border-gold bg-gray-800 overflow-hidden shadow-lg" title={`Assigned to: ${task.assigneeName || 'Wolf'}`}>
+                        {task.assigneeAvatar ? (
+                            <img src={task.assigneeAvatar} alt="Assignee" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-gold">
+                                {(task.assigneeName || 'W').substring(0, 2).toUpperCase()}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Quick Actions Overlay (Visible on Hover or if Mobile) */}
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

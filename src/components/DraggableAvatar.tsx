@@ -9,6 +9,9 @@ export const DraggableAvatar: React.FC<DraggableAvatarProps> = ({ wolf }) => {
     const handleDragStart = (e: React.DragEvent) => {
         e.dataTransfer.setData('wolfId', wolf.id);
         e.dataTransfer.setData('wolfName', wolf.name);
+        if (wolf.avatar) {
+            e.dataTransfer.setData('wolfAvatar', wolf.avatar);
+        }
         e.dataTransfer.effectAllowed = 'copy';
         
         // Create a custom drag image (optional, but looks better)
