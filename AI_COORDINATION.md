@@ -20,11 +20,16 @@
 3.  **Gamified Feedback:** Every drag-and-drop must have a "Juicy" feel (sound, haptics, visual flash).
 
 ### Active Agents & Tasks
-*   **Agent Manus (Current):** FORCING UI UPDATES & POLISHING VISUALS.
+*   **Agent Manus (Current):** PUSHING TO GITHUB & HANDING OFF.
+*   **Completed Features:**
+    *   **Holistic Visibility:** "ALL OPS" tab implemented.
+    *   **Drag-to-Assign:** Sidebar avatars can be dropped on tasks.
+    *   **Multi-Avatar Stacking:** Tasks support multiple assignees.
+    *   **Role Badges:** Avatars display role icons (Hammer, Calculator, etc.).
 *   **Next Steps:**
-    *   **High Contrast UI:** Make Phase Tabs and Signal Button visually aggressive (Gold/Black) to ensure visibility.
-    *   **Force Refresh:** Restart dev server to clear stale cache.
-    *   **Verification:** Confirm code application in `KanbanBoard.tsx`.
+    *   **Backend Integration:** Connect `ProjectContext` to real API endpoints.
+    *   **Real-Time Sync:** Implement WebSockets.
+    *   **Sound Design:** Add mechanical click sounds.
 
 ### 📂 Key Files
 *   `src/pages/MintID.tsx`: Entry point. Generates initial user state.
