@@ -22,7 +22,7 @@ export interface Task {
   status: TaskStatus;
   assignedTo?: 'labor' | 'finance' | 'sales' | string | null; // Updated to allow string ID
   assigneeIds?: string[]; // Specific user IDs
-  assignees?: { id: string; name: string; avatar?: string }[]; // Detailed assignee info for rendering
+  assignees?: { id: string; name: string; avatar?: string; role?: string }[]; // Detailed assignee info for rendering
   assigneeName?: string; // Legacy support
   assigneeAvatar?: string; // Legacy support
   method?: ExecutionMethod;

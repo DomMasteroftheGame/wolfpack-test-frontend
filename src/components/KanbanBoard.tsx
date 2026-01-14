@@ -306,7 +306,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                         if (onOutsource) onOutsource(task);
                                                         triggerFeedback('click');
                                                     }}
-                                                    onDropAvatar={(wolfId, wolfName, wolfAvatar) => {
+                                                    onDropAvatar={(wolfId, wolfName, wolfAvatar, wolfRole) => {
                                                         // Assign Wolf to Task (Append to list)
                                                         const currentAssignees = task.assignees || [];
                                                         // Check for duplicates
@@ -315,7 +315,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                             return;
                                                         }
                                                         
-                                                        const newAssignee = { id: wolfId, name: wolfName, avatar: wolfAvatar };
+                                                        const newAssignee = { id: wolfId, name: wolfName, avatar: wolfAvatar, role: wolfRole };
                                                         const updatedAssignees = [...currentAssignees, newAssignee];
 
                                                         const updatedTask = { 
@@ -328,7 +328,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks: initialTasks = [], onU
                                                         onUpdateTask(updatedTask);
                                                         triggerFeedback('success');
                                                         // Optional: Show toast
-                                                        alert(`Added ${wolfName} to ${task.title}`);
+                                                        alert(`Added ${wolfName} (${wolfRole || 'Wolf'}) to ${task.title}`);
                                                     }}
                                                 />                                                        </div>
                                                     )}

@@ -149,6 +149,17 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onAssign,
                                     {assignee.name.substring(0, 2).toUpperCase()}
                                 </div>
                             )}
+                            {/* Role Badge */}
+                            {assignee.role && (
+                                <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-black border border-gold flex items-center justify-center text-[6px]" title={assignee.role}>
+                                    {assignee.role.toLowerCase() === 'labor' && '🔨'}
+                                    {assignee.role.toLowerCase() === 'finance' && '💰'}
+                                    {assignee.role.toLowerCase() === 'sales' && '📢'}
+                                    {assignee.role.toLowerCase() === 'hacker' && '💻'}
+                                    {assignee.role.toLowerCase() === 'enforcer' && '🛡️'}
+                                    {assignee.role.toLowerCase() === 'architect' && '📐'}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

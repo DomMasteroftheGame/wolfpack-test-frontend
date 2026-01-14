@@ -12,6 +12,7 @@ export const DraggableAvatar: React.FC<DraggableAvatarProps> = ({ wolf }) => {
         if (wolf.avatar) {
             e.dataTransfer.setData('wolfAvatar', wolf.avatar);
         }
+        e.dataTransfer.setData('wolfRole', wolf.role || 'labor'); // Pass role for badges
         e.dataTransfer.effectAllowed = 'copy';
         
         // Create a custom drag image (optional, but looks better)
